@@ -21,33 +21,42 @@ public class HudComponent {
 	    private float component_width;
 	    private float component_height;
 	    private HudNode[] component_nodes;
+	    
+	    private String component_name;
+	    private String component_id;
 
-	    public HudComponent() {
+	    public HudComponent(String idName, String componentName) {
 	        this.component_x = 0.0f;
 	        this.component_y = 0.0f;
 	        this.component_inResizeState = true;
+	        component_id = idName;
+	        component_name = componentName;
 	        this.initiailize();
 	    }
 
-	    public HudComponent(float x, float y) {
+	    public HudComponent(String idName, String componentName, float x, float y) {
 	        this.component_x = x;
 	        this.component_y = y;
 	        this.component_inResizeState = false;
+	        component_id = idName;
+	        component_name = componentName;
 	        this.initiailize();
 	    }
 
-	    public HudComponent(float x, float y, float width, float height) {
+	    public HudComponent(String idName, String componentName, float x, float y, float width, float height) {
 	        this.component_x = x;
 	        this.component_y = y;
 	        this.component_width = width;
 	        this.component_height = height;
 	        this.component_inResizeState = false;
+	        component_id = idName;
+	        component_name = componentName;
 	        this.initiailize();
 	    }
 
 	    private void initiailize() {
 	        this.component_isVisible = true;
-	        this.component_resizeMode = 10;
+	        this.component_resizeMode = DEFAULT;
 	        this.component_nodes = new HudNode[9];
 	        this.component_nodes[0] = new HudNode(this, 0);
 	        this.component_nodes[1] = new HudNode(this, 1);
@@ -88,11 +97,14 @@ public class HudComponent {
 	    }
 
 	    public void onDisposeEvent() {
+	   
 	    }
-
 	    public void onMouseOver(int componentX, int componentY) {
+	   
 	    }
-
+	    public void onMouseOff(){	
+	   
+	    }
 	    public void onMouseClick(int button, int componentX, int componentY) {
 	    }
 
@@ -111,7 +123,7 @@ public class HudComponent {
 	    public void onKeyTyped(char character) {
 	    }
 
-	    public void onComponentHide() {
+	    public void onComponentHiden() {
 	    }
 
 	    public void onComponentShown() {
@@ -120,10 +132,10 @@ public class HudComponent {
 	    public void onComponentLayered() {
 	    }
 
-	    public void onComponentResized() {
+	    public void onComponentResized(float oldWidth, float oldHeight) {
 	    }
 
-	    public void onComponentMoved() {
+	    public void onComponentMoved(float oldX, float oldY) {
 	    }
 
 	    public final float getX() {
@@ -170,10 +182,12 @@ public class HudComponent {
 
 	    public final void show() {
 	        this.component_isVisible = true;
+	        onComponentShown();
 	    }
 
 	    public final void hide() {
 	        this.component_isVisible = false;
+	        onComponentHiden();
 	    }
 
 	    public final boolean isInResizeState() {

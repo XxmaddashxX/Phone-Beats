@@ -1,5 +1,7 @@
 package net.driftingcolossus.phonebeats.framework.input;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
@@ -10,7 +12,10 @@ import net.driftingcolossus.phonebeats.framework.user.hud.HudComponent;
 import net.driftingcolossus.phonebeats.framework.user.hud.HudNode;
 
 public class InputController implements InputProcessor {
-    @Override
+    
+	private final ArrayList<HudComponent> components_moused_over = new ArrayList<HudComponent>();
+	
+	@Override
     public boolean keyDown(int keycode) {
         return false;
     }
@@ -71,7 +76,7 @@ public class InputController implements InputProcessor {
             while (n2 < n) {
                 HudComponent comp = arrhudComponent[n2];
                 if (comp != null && (float)screenX >= comp.getX() + Screen.Camera_Main().position.x && (float)screenX <= comp.getX() + Screen.Camera_Main().position.x + comp.getWidth() && (float)screenY >= comp.getY() + Screen.Camera_Main().position.x && (float)screenY <= comp.getY() + Screen.Camera_Main().position.x + comp.getHeight()) {
-                    comp.onMouseClick(pointer, (int)((float)screenX - comp.getX()), (int)((float)screenY - comp.getY()));
+                    comp.onMouseClick(pointer, (int)((float)screenX - comp.getX()), (int)((float)screenY - comp.getY()));  
                     return true;
                 }
                 ++n2;
@@ -87,12 +92,16 @@ public class InputController implements InputProcessor {
         screenY = (int)vec.y;
         if (PhoneBeats.hud.hud_focused_component_held_node != null) {
             HudNode node = PhoneBeats.hud.hud_focused_component_held_node;
+            float oldX = node.getComponent().getX();
+            float oldY = node.getComponent().getY();
+            float oldWidth = node.getComponent().getWidth();
+            float oldHeight = node.getComponent().getHeight();
             node.set(screenX, screenY);
             if (node.getType() != 0) {
-                node.getComponent().onComponentResized();
+                node.getComponent().onComponentResized(oldWidth, oldHeight);
             }
             if (node.getType() == 0 || node.getType() == 1 || node.getType() == 4 || node.getType() == 6 || node.getType() == 7) {
-                node.getComponent().onComponentMoved();
+                node.getComponent().onComponentMoved(oldX, oldY);
             }
         }
         return false;
@@ -103,6 +112,13 @@ public class InputController implements InputProcessor {
         Vector2 vec = Screen.Viewport().unproject(new Vector2(screenX, screenY));
         screenX = (int)vec.x;
         screenY = (int)vec.y;
+        int i = 0;
+        for(HudComponent component: components_moused_over){
+        	if(!(component != null && (float)screenX >= component.getX() + Screen.Camera_Main().position.x && (float)screenX <= component.getX() + Screen.Camera_Main().position.x + component.getWidth() && (float)screenY >= component.getY() + Screen.Camera_Main().position.x && (float)screenY <= component.getY() + Screen.Camera_Main().position.x + component.getHeight())){
+        		components_moused_over.remove(i);
+        		i++;
+        	}
+        }
         HudComponent[] components = PhoneBeats.hud.getActiveComponents();
         if (components != null) {
             HudComponent[] arrhudComponent = components;
@@ -112,6 +128,9 @@ public class InputController implements InputProcessor {
                 HudComponent comp = arrhudComponent[n2];
                 if ((float)screenX >= comp.getX() && (float)screenX <= comp.getX() + comp.getWidth() && (float)screenY >= comp.getY() && (float)screenY <= comp.getY() + comp.getHeight()) {
                     comp.onMouseOver((int)((float)screenX - comp.getX()), (int)((float)screenY - comp.getY()));
+                    if(!components_moused_over.contains(comp)){
+                    	components_moused_over.add(comp);
+                    }   
                 }
                 ++n2;
             }

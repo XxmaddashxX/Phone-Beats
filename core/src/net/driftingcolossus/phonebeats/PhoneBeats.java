@@ -11,6 +11,8 @@ import net.driftingcolossus.phonebeats.framework.graphics.Graphics;
 import net.driftingcolossus.phonebeats.framework.graphics.Textures;
 import net.driftingcolossus.phonebeats.framework.input.InputController;
 import net.driftingcolossus.phonebeats.framework.user.hud.Hud;
+import net.driftingcolossus.phonebeats.framework.user.hud.HudGroup;
+import net.driftingcolossus.phonebeats.framework.user.hud.HudTexturePane;
 
 public class PhoneBeats extends ApplicationAdapter {
 	private Texture img;
@@ -26,11 +28,14 @@ public class PhoneBeats extends ApplicationAdapter {
     @Override
     public void create() {
 
-        Fonts.load();
+      //  Fonts.load();
         Textures.load();
         Screen.createAndRegister();
-        this.img = new Texture(Gdx.files.internal("badlogic.jpg"));
         hud = new Hud();   
+        HudGroup group = new HudGroup("test_group");
+        group.addComponent(new HudTexturePane("test", 50, 50, Textures.getTexture("badlogic"), Textures.getTexture("badlogic2")));
+        hud.addComponentGroup(group);
+        hud.show(group);
         this.linerenderer = new ShapeRenderer();
         this.fillrenderer = new ShapeRenderer();
         Gdx.input.setInputProcessor(new InputController());
