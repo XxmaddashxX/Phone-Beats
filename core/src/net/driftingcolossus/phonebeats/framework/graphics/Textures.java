@@ -9,14 +9,14 @@ import com.badlogic.gdx.graphics.Texture;
 public class Textures {
 
 	private static final String TEXTURES_LOAD_DIR = "textures";
-    private static final HashMap<String, Texture> loaded_textures = new HashMap();
+    private static final HashMap<String, Texture> loaded_textures = new HashMap<String, Texture>();
 
     public static final void load() {
-        Textures.loadTextures(Gdx.files.internal("textures").list());
+        Textures.loadTextures(Gdx.files.internal("bin/textures").list());
     }
 
     private static void loadTextures(FileHandle[] files) {
-        FileHandle[] arrfileHandle = files;
+    	FileHandle[] arrfileHandle = files;
         int n = arrfileHandle.length;
         int n2 = 0;
         while (n2 < n) {
