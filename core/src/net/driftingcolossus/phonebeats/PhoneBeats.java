@@ -11,14 +11,12 @@ import net.driftingcolossus.phonebeats.framework.graphics.Graphics;
 import net.driftingcolossus.phonebeats.framework.graphics.Textures;
 import net.driftingcolossus.phonebeats.framework.input.InputController;
 import net.driftingcolossus.phonebeats.framework.user.hud.Hud;
-import net.driftingcolossus.phonebeats.framework.user.hud.HudGroup;
 
 public class PhoneBeats extends ApplicationAdapter {
 	private Texture img;
     private ShapeRenderer linerenderer;
     private ShapeRenderer fillrenderer;
     public static Hud hud;
-    private boolean shouldRender;
     private int current_tick;
     private static final int MAX_TICKS = 20;
     private static final int SECOND_IN_MILLI = 1000;
@@ -27,7 +25,7 @@ public class PhoneBeats extends ApplicationAdapter {
 
     @Override
     public void create() {
-        System.out.println(0.05);
+
         Fonts.load();
         Textures.load();
         Screen.createAndRegister();
