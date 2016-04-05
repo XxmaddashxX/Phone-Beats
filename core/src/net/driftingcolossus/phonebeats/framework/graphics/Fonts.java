@@ -1,6 +1,7 @@
 package net.driftingcolossus.phonebeats.framework.graphics;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -11,11 +12,11 @@ public class Fonts {
 	
 	private static final String FONT_FOLDER = "fonts";
     private static final int[] FONT_SIZES = new int[]{8, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 36, 40, 48, 50, 60, 70, 80, 90, 100};
-    private static final HashMap<String, BitmapFont> font_bitmaps = new HashMap();
+    private static final HashMap<String, BitmapFont> font_bitmaps = new HashMap<String, BitmapFont>();
 
     public static final void load() {
-        FileHandle[] files = Gdx.files.internal("fonts").list(new TTFFilter());
-        System.out.println(Gdx.files.internal("fonts").path());
+        FileHandle[] files = Gdx.files.internal("bin/fonts").list(new TTFFilter());
+        System.out.println(Gdx.files.internal("bin/fonts").path());
         if (files != null) {
             FileHandle[] arrfileHandle = files;
             int n = arrfileHandle.length;
@@ -42,6 +43,12 @@ public class Fonts {
 
     public static final BitmapFont get(String key) {
         return font_bitmaps.get(key);
+    }
+    public static final void dispose(){
+    	Iterator<BitmapFont> i = font_bitmaps.values().iterator();
+    	while(i.hasNext()){
+    		i.next().dispose();
+    	}
     }
 	
 }

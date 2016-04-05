@@ -16,16 +16,23 @@ public class HudTexturePane extends HudComponent{
 	
 	public HudTexturePane(String idName, float x, float y, float width, float height, Texture normalTexture, Texture rolloverTexture) {
 		super(idName, COMPONENT_NAME, x, y, width, height);
+		pane_texture_normal = normalTexture;
+		pane_texture_rollover = rolloverTexture;
 	}
 
 	public HudTexturePane(String idName, float x, float y, Texture normalTexture, Texture rolloverTexture) {
 		super(idName, COMPONENT_NAME, x, y);
-		float maxWidth = Math.max(normalTexture.getWidth(), rolloverTexture.getWidth());
-		float maxHeight = Math.max(normalTexture.getHeight(), rolloverTexture.getHeight());
+		float maxWidth = normalTexture.getWidth();
+		float maxHeight = normalTexture.getHeight();
+		if(rolloverTexture != null){
+			maxWidth = Math.max(normalTexture.getWidth(), rolloverTexture.getWidth());
+			maxHeight = Math.max(normalTexture.getHeight(), rolloverTexture.getHeight());
+		}
 		setWidth(maxWidth);
 		setHeight(maxHeight);
 		pane_texture_normal = normalTexture;
 		pane_texture_rollover = rolloverTexture;
+		this.updateControlNodes();
 	}
 
 	@Override

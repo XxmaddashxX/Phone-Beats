@@ -1,9 +1,11 @@
 package net.driftingcolossus.phonebeats.framework.input;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
 
 import net.driftingcolossus.phonebeats.PhoneBeats;
@@ -22,6 +24,19 @@ public class InputController implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
+    	if(keycode == Keys.S){
+    		try {
+				PhoneBeats.hud.writeToDesktop();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
+    	if(keycode == Keys.R){
+    		PhoneBeats.hud.switchAllToResize(true);
+    	}
+    	if(keycode == Keys.T){
+    		PhoneBeats.hud.switchAllToResize(false);
+    	}
         return false;
     }
 
@@ -113,11 +128,16 @@ public class InputController implements InputProcessor {
         screenX = (int)vec.x;
         screenY = (int)vec.y;
         int i = 0;
+        ArrayList<Integer> needToRemove = new ArrayList<Integer>();
         for(HudComponent component: components_moused_over){
         	if(!(component != null && (float)screenX >= component.getX() + Screen.Camera_Main().position.x && (float)screenX <= component.getX() + Screen.Camera_Main().position.x + component.getWidth() && (float)screenY >= component.getY() + Screen.Camera_Main().position.x && (float)screenY <= component.getY() + Screen.Camera_Main().position.x + component.getHeight())){
-        		components_moused_over.remove(i);
-        		i++;
+        		component.onMouseOff();
+        		needToRemove.add(i);
         	}
+        	i++;
+        }
+        for(Integer o: needToRemove){
+        	components_moused_over.remove(Integer.valueOf(o));
         }
         HudComponent[] components = PhoneBeats.hud.getActiveComponents();
         if (components != null) {

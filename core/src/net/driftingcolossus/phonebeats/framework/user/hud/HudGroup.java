@@ -41,5 +41,13 @@ public class HudGroup {
 			comp.hide();
 		}
 	}
+	public final String getGroupName(){
+		return group_name;
+	}
+	public final void setAllResize(boolean resize){
+		for(HudComponent component: group_components){
+			component.switchResizeState(resize);
+		}
+	}
 
 }

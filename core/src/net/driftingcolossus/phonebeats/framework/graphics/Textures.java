@@ -1,6 +1,7 @@
 package net.driftingcolossus.phonebeats.framework.graphics;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -34,6 +35,12 @@ public class Textures {
 
     public static Texture getTexture(String key) {
         return loaded_textures.get(key);
+    }
+    public static final void dispose(){
+    	Iterator<Texture> i = loaded_textures.values().iterator();
+    	while(i.hasNext()){
+    		i.next().dispose();
+    	}
     }
 	
 }
