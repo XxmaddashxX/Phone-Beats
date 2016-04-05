@@ -2,6 +2,7 @@ package net.driftingcolossus.phonebeats.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.graphics.Color;
 
 import net.driftingcolossus.phonebeats.PhoneBeats;
 

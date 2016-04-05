@@ -2,7 +2,9 @@ package net.driftingcolossus.phonebeats;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
@@ -10,10 +12,8 @@ import net.driftingcolossus.phonebeats.framework.Screen;
 import net.driftingcolossus.phonebeats.framework.graphics.Fonts;
 import net.driftingcolossus.phonebeats.framework.graphics.Graphics;
 import net.driftingcolossus.phonebeats.framework.graphics.Textures;
-import net.driftingcolossus.phonebeats.framework.graphics.UI;
 import net.driftingcolossus.phonebeats.framework.input.InputController;
 import net.driftingcolossus.phonebeats.framework.user.hud.Hud;
-import net.driftingcolossus.phonebeats.framework.user.hud.HudGroup;
 import net.driftingcolossus.phonebeats.framework.user.sht.HudShell;
 import net.driftingcolossus.phonebeats.framework.user.sht.SHT;
 
@@ -27,6 +27,8 @@ public class PhoneBeats extends ApplicationAdapter {
 	private static final int SECOND_IN_MILLI = 1000;
 	private static final double MAX_UPDATE_LENGHT = 0.05;
 	private float delta;
+	private HudShell shell;
+	private BitmapFont font;
 
 	@Override
 	public void create() {
@@ -35,12 +37,15 @@ public class PhoneBeats extends ApplicationAdapter {
 		Textures.load();
 		Screen.createAndRegister();
 		hud = new Hud();   
-		HudGroup group = UI.newMainMenuScene();
-		hud.addComponentGroup(group);
-		hud.show(group);
+		//HudGroup group = UI.newMainMenuScene();
+		//hud.addComponentGroup(group);
+		//hud.show(group);
+		shell = new HudShell(SHT.BORDER + SHT.TITLE);
 		this.linerenderer = new ShapeRenderer();
 		this.fillrenderer = new ShapeRenderer();
 		Gdx.input.setInputProcessor(new InputController());
+		font = new BitmapFont();
+		font.setColor(Color.WHITE);
 		this.current_tick = 0;
 		this.delta = 0.0f;
 	}
@@ -64,11 +69,14 @@ public class PhoneBeats extends ApplicationAdapter {
 		Graphics.begin(Screen.SCREEN_BATCH_HUD);
 		this.fillrenderer.begin(ShapeRenderer.ShapeType.Filled);
 		linerenderer.begin(ShapeType.Line);
+		shell.render(Screen.SpriteBatch_HUD(), fillrenderer, linerenderer);
 		hud.render(Screen.SpriteBatch_HUD(), null, null);
 		hud.renderControlPoints(this.fillrenderer, this.linerenderer);
 		Screen.SpriteBatch_HUD().flush();
 		linerenderer.end();
+		fillrenderer.flush();
 		this.fillrenderer.end();
+		font.draw(Screen.SpriteBatch_HUD(), "HELLO", 5, 75);
 		Graphics.end(Screen.SCREEN_BATCH_HUD);
 		Graphics.end(Screen.SCREEN_FBO_MAIN);
 		Graphics.draw(Screen.SCREEN_FBO_MAIN);
