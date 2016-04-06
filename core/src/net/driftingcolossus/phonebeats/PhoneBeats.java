@@ -66,17 +66,15 @@ public class PhoneBeats extends ApplicationAdapter {
 		this.fillrenderer.setProjectionMatrix(Screen.Camera_Main().combined.setToOrtho2D(0.0f, 0.0f, Screen.SCREEN_VIEWPORT_WIDTH, Screen.SCREEN_VIEWPORT_HEIGHT));
 		linerenderer.setProjectionMatrix(Screen.Camera_Main().combined.setToOrtho2D(0.0f, 0.0f, Screen.SCREEN_VIEWPORT_WIDTH, Screen.SCREEN_VIEWPORT_HEIGHT));
 		Graphics.begin(Screen.SCREEN_FBO_MAIN);
-		Graphics.begin(Screen.SCREEN_BATCH_HUD);
+		
 		this.fillrenderer.begin(ShapeRenderer.ShapeType.Filled);
 		linerenderer.begin(ShapeType.Line);
-		shell.render(Screen.SpriteBatch_HUD(), fillrenderer, linerenderer);
-		hud.render(Screen.SpriteBatch_HUD(), null, null);
-		hud.renderControlPoints(this.fillrenderer, this.linerenderer);
-		Screen.SpriteBatch_HUD().flush();
+		shell.renderShell(fillrenderer, linerenderer);
 		linerenderer.end();
 		fillrenderer.flush();
 		this.fillrenderer.end();
-		font.draw(Screen.SpriteBatch_HUD(), "HELLO", 5, 75);
+		Graphics.begin(Screen.SCREEN_BATCH_HUD);
+		shell.renderComponents(Screen.SpriteBatch_HUD());
 		Graphics.end(Screen.SCREEN_BATCH_HUD);
 		Graphics.end(Screen.SCREEN_FBO_MAIN);
 		Graphics.draw(Screen.SCREEN_FBO_MAIN);

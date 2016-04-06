@@ -40,6 +40,15 @@ public class SHT{
 	 * Used in {@link HudShell}
 	 */
 	public static final String RESIZE = "i";
+	
+	
+	public static final int Selection = 1;
+	
+	public static final int Moved = 2;
+	
+	public static final int Resized = 3;
+	
+	public static final int Disposed = 4;
 
 
 }
