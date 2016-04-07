@@ -74,6 +74,8 @@ public class HudShell implements HudDrawable{
 
 	private Rectangle shell_bounds_client_area;
 
+	private Rectangle shell_bounds_title_area;
+	
 	public HudShell(String style){
 		checkStyle(style);
 		initialize("Hud Shell", STATIC.shell_default_shell_position_x, STATIC.shell_default_shell_position_y, STATIC.shell_default_shell_size_width, STATIC.shell_default_shell_size_height,
@@ -145,6 +147,7 @@ public class HudShell implements HudDrawable{
 		else{
 			shell_background_color = STATIC.shell_default_color_background;
 		}
+		shell_bounds_title_area = new Rectangle(shell_position_x, shell_position_y + (shell_size_height - shell_title_thickness), shell_size_width, shell_title_thickness);
 
 
 
@@ -231,6 +234,12 @@ public class HudShell implements HudDrawable{
 			drawTitleBar(batch);
 		}
 
+	}
+	public final void open(){
+		SHT.shellOpen(this);
+	}
+	public final void close(){
+		SHT.shellClose(this);
 	}
 	static class STATIC{
 

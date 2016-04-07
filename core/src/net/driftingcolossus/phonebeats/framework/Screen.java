@@ -31,7 +31,7 @@ public class Screen {
         screen_viewport = new StretchViewport(800.0f, 600.0f, screen_camera_main);
         SCREEN_VIEWPORT = Graphics.register(screen_viewport);
         screen_viewport.apply(true);
-        screen_fbo_main = new FrameBuffer(Pixmap.Format.RGBA8888, 800, 600, false);
+        screen_fbo_main = new FrameBuffer(Pixmap.Format.RGBA8888, (int)SCREEN_VIEWPORT_WIDTH, (int)SCREEN_VIEWPORT_HEIGHT, false);
         SCREEN_FBO_MAIN = Graphics.register(screen_fbo_main);
         screen_batch_main = new SpriteBatch();
         SCREEN_BATCH_MAIN = Graphics.register(screen_batch_main);
@@ -65,6 +65,10 @@ public class Screen {
         screen_fbo_main.dispose();
         Graphics.setFullDispose(true);
         Gdx.app.exit();
+    }
+    public static final void resize(int width, int height){
+    	screen_viewport.update(width, height);
+    	screen_camera_main.update();
     }
 	
 	

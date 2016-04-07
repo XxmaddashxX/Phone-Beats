@@ -48,6 +48,7 @@ public class PhoneBeats extends ApplicationAdapter {
 		font.setColor(Color.WHITE);
 		this.current_tick = 0;
 		this.delta = 0.0f;
+		shell.open();
 	}
 
 	@Override
@@ -66,13 +67,8 @@ public class PhoneBeats extends ApplicationAdapter {
 		this.fillrenderer.setProjectionMatrix(Screen.Camera_Main().combined.setToOrtho2D(0.0f, 0.0f, Screen.SCREEN_VIEWPORT_WIDTH, Screen.SCREEN_VIEWPORT_HEIGHT));
 		linerenderer.setProjectionMatrix(Screen.Camera_Main().combined.setToOrtho2D(0.0f, 0.0f, Screen.SCREEN_VIEWPORT_WIDTH, Screen.SCREEN_VIEWPORT_HEIGHT));
 		Graphics.begin(Screen.SCREEN_FBO_MAIN);
+		SHT.render(Screen.SpriteBatch_HUD(), fillrenderer, linerenderer);
 		
-		this.fillrenderer.begin(ShapeRenderer.ShapeType.Filled);
-		linerenderer.begin(ShapeType.Line);
-		shell.renderShell(fillrenderer, linerenderer);
-		linerenderer.end();
-		fillrenderer.flush();
-		this.fillrenderer.end();
 		Graphics.begin(Screen.SCREEN_BATCH_HUD);
 		shell.renderComponents(Screen.SpriteBatch_HUD());
 		Graphics.end(Screen.SCREEN_BATCH_HUD);
@@ -84,7 +80,7 @@ public class PhoneBeats extends ApplicationAdapter {
 
 	@Override
 	public void resize(int width, int height) {
-		Screen.Viewport().update(width, height);
+		Screen.resize(width, height);
 	}
 
 	@Override
