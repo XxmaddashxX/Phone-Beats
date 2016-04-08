@@ -1,6 +1,6 @@
 package net.driftingcolossus.phonebeats.framework.user.sht.layouts;
 
-import net.driftingcolossus.phonebeats.framework.user.sht.widgets.HudWidget;
+import net.driftingcolossus.phonebeats.framework.user.sht.HudWidget;
 
 public class HudAbsoluteLayout extends HudLayout{
 

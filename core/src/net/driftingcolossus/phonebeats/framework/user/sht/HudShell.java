@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
-public class HudShell implements HudDrawable{
+public class HudShell extends HudResource implements HudDrawable{
 
 	private boolean shell_showTitle;
 
@@ -147,8 +147,7 @@ public class HudShell implements HudDrawable{
 		else{
 			shell_background_color = STATIC.shell_default_color_background;
 		}
-		shell_bounds_title_area = new Rectangle(shell_position_x, shell_position_y + (shell_size_height - shell_title_thickness), shell_size_width, shell_title_thickness);
-
+		updateTitleBounds();
 
 
 	}
@@ -240,6 +239,31 @@ public class HudShell implements HudDrawable{
 	}
 	public final void close(){
 		SHT.shellClose(this);
+	}
+	protected final boolean inTitleArea(int x, int y){
+		if(shell_bounds_title_area.contains(x, y)){
+			return true;
+		}
+		return false;
+	}
+	public final void translate(float x, float y){
+		shell_position_x += x;
+		shell_position_y += y;
+		updateTitleBounds();
+	}
+	public final void focus(){
+		SHT.focusShell(this);
+	}
+	public final void unFocus(){
+		SHT.unFocusShell(this);
+	}
+	public final void set(float x, float y){
+		shell_position_x = x;
+		shell_position_y = y;
+		updateTitleBounds();
+	}
+	public final void updateTitleBounds(){
+		shell_bounds_title_area = new Rectangle(shell_position_x, shell_position_y + (shell_size_height - shell_title_thickness), shell_size_width, shell_title_thickness);
 	}
 	static class STATIC{
 

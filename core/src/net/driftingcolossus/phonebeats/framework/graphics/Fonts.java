@@ -8,15 +8,24 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
+import net.driftingcolossus.phonebeats.PhoneBeats;
+
 public class Fonts {
 	
 	private static final String FONT_FOLDER = "fonts";
+	private static final String FONT_DEV_FOLDER = "bin/fonts";
     private static final int[] FONT_SIZES = new int[]{8, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 36, 40, 48, 50, 60, 70, 80, 90, 100};
     private static final HashMap<String, BitmapFont> font_bitmaps = new HashMap<String, BitmapFont>();
 
     public static final void load() {
-        FileHandle[] files = Gdx.files.internal("bin/fonts").list(new TTFFilter());
-        System.out.println(Gdx.files.internal("bin/fonts").path());
+        FileHandle[] files = null;
+        if(PhoneBeats.isDevEnviroment()){
+        	files = Gdx.files.internal(FONT_DEV_FOLDER).list(new TTFFilter());
+        }
+        else{
+        	files = Gdx.files.internal(FONT_FOLDER).list(new TTFFilter());
+        }
+    	
         if (files != null) {
             FileHandle[] arrfileHandle = files;
             int n = arrfileHandle.length;

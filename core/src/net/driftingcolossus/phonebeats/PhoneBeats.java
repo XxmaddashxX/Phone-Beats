@@ -6,16 +6,16 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
+import net.driftingcolossus.phonebeats.framework.DeviceType;
 import net.driftingcolossus.phonebeats.framework.Screen;
 import net.driftingcolossus.phonebeats.framework.graphics.Fonts;
 import net.driftingcolossus.phonebeats.framework.graphics.Graphics;
 import net.driftingcolossus.phonebeats.framework.graphics.Textures;
-import net.driftingcolossus.phonebeats.framework.input.InputController;
 import net.driftingcolossus.phonebeats.framework.user.hud.Hud;
 import net.driftingcolossus.phonebeats.framework.user.sht.HudShell;
 import net.driftingcolossus.phonebeats.framework.user.sht.SHT;
+import net.driftingcolossus.phonebeats.framework.user.sht.SHTProcessor;
 
 public class PhoneBeats extends ApplicationAdapter {
 	private Texture img;
@@ -30,6 +30,12 @@ public class PhoneBeats extends ApplicationAdapter {
 	private HudShell shell;
 	private BitmapFont font;
 
+	private static DeviceType application_device;
+	
+	public PhoneBeats(DeviceType type){
+		application_device = type;
+	}
+	
 	@Override
 	public void create() {
 		new HudShell(SHT.MAX + SHT.CLOSE + SHT.MIN + SHT.TITLE);
@@ -43,7 +49,7 @@ public class PhoneBeats extends ApplicationAdapter {
 		shell = new HudShell(SHT.BORDER + SHT.TITLE);
 		this.linerenderer = new ShapeRenderer();
 		this.fillrenderer = new ShapeRenderer();
-		Gdx.input.setInputProcessor(new InputController());
+		Gdx.input.setInputProcessor(new SHTProcessor());
 		font = new BitmapFont();
 		font.setColor(Color.WHITE);
 		this.current_tick = 0;
@@ -100,5 +106,17 @@ public class PhoneBeats extends ApplicationAdapter {
 		if (this.current_tick == 20) {
 			this.current_tick = 1;
 		}
+	}
+	public static boolean isDesktop(){
+		return application_device.equals(DeviceType.Desktop);
+	}
+	public static boolean isAndroid(){
+		return application_device.equals(DeviceType.Android);
+	}
+	public static boolean isiOS(){
+		return application_device.equals(DeviceType.iOS);
+	}
+	public static boolean isDevEnviroment(){
+		return application_device.equals(DeviceType.Development);
 	}
 }

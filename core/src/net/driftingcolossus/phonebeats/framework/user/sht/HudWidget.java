@@ -1,4 +1,4 @@
-package net.driftingcolossus.phonebeats.framework.user.sht.widgets;
+package net.driftingcolossus.phonebeats.framework.user.sht;
 
 import java.util.HashMap;
 
@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import net.driftingcolossus.phonebeats.framework.user.sht.composites.HudComposite;
 
-public class HudWidget {
+public class HudWidget extends HudResource{
 	
 	private final HashMap<String, Object> widget_data = new HashMap<String, Object>();
 	
@@ -26,6 +26,12 @@ public class HudWidget {
 	}
 	public void render(SpriteBatch batch){
 		
+	}
+	public final void focus(){
+		SHT.focusWidget(this);
+	}
+	public final void unFocus(){
+		SHT.unFocusWidget(this);
 	}
 
 }

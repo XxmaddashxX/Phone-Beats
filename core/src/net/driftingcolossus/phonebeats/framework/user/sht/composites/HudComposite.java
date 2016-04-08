@@ -3,9 +3,9 @@ package net.driftingcolossus.phonebeats.framework.user.sht.composites;
 import java.util.ArrayList;
 
 import net.driftingcolossus.phonebeats.framework.user.sht.HudShell;
+import net.driftingcolossus.phonebeats.framework.user.sht.HudWidget;
 import net.driftingcolossus.phonebeats.framework.user.sht.layouts.HudAbsoluteLayout;
 import net.driftingcolossus.phonebeats.framework.user.sht.layouts.HudLayout;
-import net.driftingcolossus.phonebeats.framework.user.sht.widgets.HudWidget;
 
 public class HudComposite {
 	

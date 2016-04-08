@@ -7,13 +7,22 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 
+import net.driftingcolossus.phonebeats.PhoneBeats;
+
 public class Textures {
 
 	private static final String TEXTURES_LOAD_DIR = "textures";
+	private static final String TEXTURES_DEV_DIR = "bin/textures";
     private static final HashMap<String, Texture> loaded_textures = new HashMap<String, Texture>();
 
     public static final void load() {
-        Textures.loadTextures(Gdx.files.internal("bin/textures").list());
+        if(PhoneBeats.isDevEnviroment()){
+        	Textures.loadTextures(Gdx.files.internal(TEXTURES_DEV_DIR).list());
+        }
+        else{
+        	Textures.loadTextures(Gdx.files.internal(TEXTURES_LOAD_DIR).list());
+        }
+    
     }
 
     private static void loadTextures(FileHandle[] files) {

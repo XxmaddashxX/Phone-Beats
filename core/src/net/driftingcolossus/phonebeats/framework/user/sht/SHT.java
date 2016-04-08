@@ -7,11 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
-import net.driftingcolossus.phonebeats.framework.user.sht.widgets.HudWidget;
-
 public class SHT{
-
-	private static final Stack<HudShell> sht_openhudshellsstack = new Stack<HudShell>();
 	
 	//static final int YYYY = 1 << 0;	
 
@@ -102,6 +98,18 @@ public class SHT{
 	
 	private static HudShell sht_focused_shell;
 	
+	private static HudWidget sht_focused_widget;
+	
+	
+	private static final Stack<HudShell> sht_openhudshellsstack = new Stack<HudShell>();
+	
+	
+	
+	
+	
+	
+	
+	
 	public static final void render(SpriteBatch batch, ShapeRenderer fillRenderer, ShapeRenderer lineRenderer){
 		for(HudShell shell: sht_openhudshellsstack){
 			fillRenderer.begin(ShapeType.Filled);
@@ -109,7 +117,6 @@ public class SHT{
 			shell.renderShell(fillRenderer, lineRenderer);
 			lineRenderer.end();
 			fillRenderer.end();
-			
 		}
 	}
 	protected static final void shellOpen(HudShell shell){
@@ -121,6 +128,28 @@ public class SHT{
 		if(!sht_openhudshellsstack.isEmpty()){
 			sht_focused_shell = sht_openhudshellsstack.peek();
 		}
+	}
+	protected static final void focusWidget(HudWidget widget){
+		sht_focused_widget = widget;
+	}
+	protected static final void unFocusWidget(HudWidget widget){
+		sht_focused_widget = null;
+	}
+	protected static final void focusShell(HudShell shell){
+		sht_focused_shell = shell;
+	}
+	protected static final void unFocusShell(HudShell shell){
+		sht_focused_shell = null;
+	}
+	protected static final HudShell[] getOpenShellStack(){
+		HudShell[] array = new HudShell[sht_openhudshellsstack.size()];
+		for(int i = 0; i < sht_openhudshellsstack.size(); i++){
+			array[i] = sht_openhudshellsstack.get(i);
+		}
+		return array;
+	}
+	protected static final HudShell getFocusedShell(){
+		return sht_focused_shell;
 	}
 	
 }
