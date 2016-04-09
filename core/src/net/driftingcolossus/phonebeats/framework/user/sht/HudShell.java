@@ -76,6 +76,21 @@ public class HudShell extends HudResource implements HudDrawable{
 
 	private Rectangle shell_bounds_title_area;
 	
+	private Rectangle shell_bounds_border_left;
+	
+	private Rectangle shell_bounds_border_right;
+	
+	private Rectangle shell_bounds_border_bottom;
+	
+	private Rectangle shell_bounds_border_bottom_left;
+	
+	private Rectangle shell_bounds_border_bottom_right;
+	
+	private Rectangle shell_bounds_border_top_left;
+	
+	private Rectangle shell_bounds_border_top_right;
+	
+	
 	public HudShell(String style){
 		checkStyle(style);
 		initialize("Hud Shell", STATIC.shell_default_shell_position_x, STATIC.shell_default_shell_position_y, STATIC.shell_default_shell_size_width, STATIC.shell_default_shell_size_height,
@@ -134,7 +149,7 @@ public class HudShell extends HudResource implements HudDrawable{
 			shell_title_thickness = STATIC.shell_default_shell_title_thickness;
 		}
 		if(shell_drawBorder){
-			if(borderThickness < 0){
+			if(borderThickness <= 0){
 				shell_border_thickness = STATIC.shell_default_shell_border_thickness;
 			}
 			else{
@@ -147,7 +162,7 @@ public class HudShell extends HudResource implements HudDrawable{
 		else{
 			shell_background_color = STATIC.shell_default_color_background;
 		}
-		updateTitleBounds();
+		updateBounds();
 
 
 	}
@@ -187,6 +202,7 @@ public class HudShell extends HudResource implements HudDrawable{
 		if(style.contains(SHT.BORDER)){
 			shell_drawBorder = true;
 		}
+	
 	}
 
 	private final void drawTitleBar(SpriteBatch batch){
@@ -241,15 +257,20 @@ public class HudShell extends HudResource implements HudDrawable{
 		SHT.shellClose(this);
 	}
 	protected final boolean inTitleArea(int x, int y){
-		if(shell_bounds_title_area.contains(x, y)){
-			return true;
-		}
-		return false;
+		return shell_bounds_title_area.contains(x, y);
+	}
+	protected final boolean inLeftArea(int x, int y){
+		return shell_bounds_border_left.contains(x, y);
 	}
 	public final void translate(float x, float y){
 		shell_position_x += x;
 		shell_position_y += y;
-		updateTitleBounds();
+		updateBounds();
+	}
+	public final void translateSize(float width, float height){
+		shell_size_width += width;
+		shell_size_height += height;
+		updateBounds();
 	}
 	public final void focus(){
 		SHT.focusShell(this);
@@ -260,10 +281,11 @@ public class HudShell extends HudResource implements HudDrawable{
 	public final void set(float x, float y){
 		shell_position_x = x;
 		shell_position_y = y;
-		updateTitleBounds();
+		updateBounds();
 	}
-	public final void updateTitleBounds(){
-		shell_bounds_title_area = new Rectangle(shell_position_x, shell_position_y + (shell_size_height - shell_title_thickness), shell_size_width, shell_title_thickness);
+	public final void updateBounds(){
+		shell_bounds_title_area = new Rectangle(shell_position_x + shell_border_thickness, shell_position_y + (shell_size_height - shell_title_thickness), shell_size_width - shell_border_thickness, shell_title_thickness);
+		shell_bounds_border_left = new Rectangle(shell_position_x, shell_position_y + shell_border_thickness, shell_border_thickness, shell_size_height - (shell_border_thickness * 2));
 	}
 	static class STATIC{
 

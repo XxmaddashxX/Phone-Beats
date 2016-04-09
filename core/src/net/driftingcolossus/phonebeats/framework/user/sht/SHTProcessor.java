@@ -15,6 +15,12 @@ public class SHTProcessor implements InputProcessor{
 	
 	private boolean shell_drag_mode_move;
 	
+	private boolean shell_drag_mode_size;
+	
+	private boolean shell_drag_block_x;
+	
+	private boolean shell_drag_block_y;
+	
 	@Override
 	public boolean keyDown(int keycode) {
 		return false;
@@ -42,6 +48,16 @@ public class SHTProcessor implements InputProcessor{
 				hud.focus();
 				return true;
 			}
+			if(hud.inLeftArea((int)pos.x, (int)pos.y)){
+				shell_drag_down = true;
+				shell_drag_position_x = pos.x;
+				shell_drag_position_y = pos.y;
+				shell_drag_mode_move = true;
+				shell_drag_mode_size = true;
+				shell_drag_block_y = true;
+				hud.focus();
+				return true;
+			}
 		}
 		return false;
 	}
@@ -50,6 +66,9 @@ public class SHTProcessor implements InputProcessor{
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		shell_drag_down = false;
 		shell_drag_mode_move = false;
+		shell_drag_mode_size = false;
+		shell_drag_block_x = false;
+		shell_drag_block_y = false;
 		return false;
 	}
 
@@ -58,11 +77,15 @@ public class SHTProcessor implements InputProcessor{
 		Vector3 pos = Screen.Camera_Main().unproject(new Vector3(screenX, screenY,0));
 		if(shell_drag_down){
 			if(SHT.getFocusedShell() != null){
+				if(shell_drag_mode_size){
+					SHT.getFocusedShell().translateSize((shell_drag_position_x - pos.x), 0);
+				}
 				if(shell_drag_mode_move){
-					SHT.getFocusedShell().translate(-(shell_drag_position_x - pos.x), -(shell_drag_position_y - pos.y));
+					SHT.getFocusedShell().translate(shell_drag_block_x ? 0 : -(shell_drag_position_x - pos.x), shell_drag_block_y ? 0 : -(shell_drag_position_y - pos.y));
 					shell_drag_position_x = pos.x;
 					shell_drag_position_y = pos.y;
 				}
+				
 			}
 		}
 		return false;
