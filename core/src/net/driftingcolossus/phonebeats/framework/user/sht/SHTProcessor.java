@@ -11,6 +11,10 @@ public class SHTProcessor implements InputProcessor{
 	
 	private float shell_drag_position_y;
 	
+	private float shell_drag_size_width;
+	
+	private float shell_drag_size_height;
+	
 	private boolean shell_drag_down;
 	
 	private boolean shell_drag_mode_move;
@@ -40,23 +44,29 @@ public class SHTProcessor implements InputProcessor{
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		Vector3 pos = Screen.Camera_Main().unproject(new Vector3(screenX, screenY,0));
 		for(HudShell hud: SHT.getOpenShellStack()){
+			shell_drag_position_x = pos.x;
+			shell_drag_position_y = pos.y;
+			shell_drag_size_width = hud.getWidth();
+			shell_drag_size_height = hud.getHeight();
 			if(hud.inTitleArea((int)pos.x, (int)pos.y)){
 				shell_drag_down = true;
-				shell_drag_position_x = pos.x;
-				shell_drag_position_y = pos.y;
 				shell_drag_mode_move = true;
 				hud.focus();
 				return true;
 			}
 			if(hud.inLeftArea((int)pos.x, (int)pos.y)){
 				shell_drag_down = true;
-				shell_drag_position_x = pos.x;
-				shell_drag_position_y = pos.y;
 				shell_drag_mode_move = true;
 				shell_drag_mode_size = true;
 				shell_drag_block_y = true;
 				hud.focus();
 				return true;
+			}
+			if(hud.inRightArea((int)pos.x, (int)pos.y)){
+				shell_drag_down = true;
+				shell_drag_mode_size = true;
+				shell_drag_block_y = true;
+				hud.focus();
 			}
 		}
 		return false;
@@ -78,12 +88,15 @@ public class SHTProcessor implements InputProcessor{
 		if(shell_drag_down){
 			if(SHT.getFocusedShell() != null){
 				if(shell_drag_mode_size){
-					SHT.getFocusedShell().translateSize((shell_drag_position_x - pos.x), 0);
+					SHT.getFocusedShell().translateSize(shell_drag_block_x ? 0 : -(shell_drag_size_width - pos.x), shell_drag_block_y ? 0 :  -(shell_drag_size_height - pos.y));
+					shell_drag_size_width = pos.x;
+					shell_drag_size_height = pos.y;
 				}
 				if(shell_drag_mode_move){
 					SHT.getFocusedShell().translate(shell_drag_block_x ? 0 : -(shell_drag_position_x - pos.x), shell_drag_block_y ? 0 : -(shell_drag_position_y - pos.y));
 					shell_drag_position_x = pos.x;
 					shell_drag_position_y = pos.y;
+					SHT.getFocusedShell();
 				}
 				
 			}

@@ -90,6 +90,7 @@ public class HudShell extends HudResource implements HudDrawable{
 	
 	private Rectangle shell_bounds_border_top_right;
 	
+	private HudComposite shell_composite;
 	
 	public HudShell(String style){
 		checkStyle(style);
@@ -241,12 +242,17 @@ public class HudShell extends HudResource implements HudDrawable{
 		if(shell_drawBorder){
 			drawBorder(fillRenderer);
 		}
+		
 
 	}
 	@Override
 	public void renderComponents(SpriteBatch batch) {
 		if(shell_showTitle){
 			drawTitleBar(batch);
+		}
+		batch.flush();
+		if(shell_composite != null){
+			shell_composite.renderWidgets(batch);
 		}
 
 	}
@@ -262,7 +268,13 @@ public class HudShell extends HudResource implements HudDrawable{
 	protected final boolean inLeftArea(int x, int y){
 		return shell_bounds_border_left.contains(x, y);
 	}
+	protected final boolean inRightArea(int x, int y){
+		return shell_bounds_border_right.contains(x, y);
+	}
 	public final void translate(float x, float y){
+		if(shell_composite != null){
+			shell_composite.translateAll(x, y);
+		}
 		shell_position_x += x;
 		shell_position_y += y;
 		updateBounds();
@@ -271,6 +283,9 @@ public class HudShell extends HudResource implements HudDrawable{
 		shell_size_width += width;
 		shell_size_height += height;
 		updateBounds();
+	}
+	protected final void setComposite(HudComposite composite){
+		shell_composite = composite;
 	}
 	public final void focus(){
 		SHT.focusShell(this);
@@ -286,6 +301,18 @@ public class HudShell extends HudResource implements HudDrawable{
 	public final void updateBounds(){
 		shell_bounds_title_area = new Rectangle(shell_position_x + shell_border_thickness, shell_position_y + (shell_size_height - shell_title_thickness), shell_size_width - shell_border_thickness, shell_title_thickness);
 		shell_bounds_border_left = new Rectangle(shell_position_x, shell_position_y + shell_border_thickness, shell_border_thickness, shell_size_height - (shell_border_thickness * 2));
+		shell_bounds_border_right = new Rectangle(shell_position_x + (shell_size_width - shell_border_thickness), shell_position_y + shell_border_thickness, shell_border_thickness, shell_size_height - (shell_border_thickness * 2));
+		shell_bounds_client_area = new Rectangle(shell_position_x + shell_border_thickness, shell_position_y + shell_border_thickness, shell_size_width - (shell_border_thickness * 2), shell_size_height - (shell_border_thickness * 2));
+	
+	}
+	public final float getWidth(){
+		return shell_size_width;
+	}
+	public final float getHeight(){
+		return shell_size_height;
+	}
+	public final Rectangle getClientArea(){
+		return shell_bounds_client_area;
 	}
 	static class STATIC{
 

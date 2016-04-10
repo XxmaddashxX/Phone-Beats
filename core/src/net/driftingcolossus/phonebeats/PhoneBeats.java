@@ -13,9 +13,11 @@ import net.driftingcolossus.phonebeats.framework.graphics.Fonts;
 import net.driftingcolossus.phonebeats.framework.graphics.Graphics;
 import net.driftingcolossus.phonebeats.framework.graphics.Textures;
 import net.driftingcolossus.phonebeats.framework.user.hud.Hud;
+import net.driftingcolossus.phonebeats.framework.user.sht.HudComposite;
 import net.driftingcolossus.phonebeats.framework.user.sht.HudShell;
 import net.driftingcolossus.phonebeats.framework.user.sht.SHT;
 import net.driftingcolossus.phonebeats.framework.user.sht.SHTProcessor;
+import net.driftingcolossus.phonebeats.framework.user.sht.widgets.HudProgressBar;
 
 public class PhoneBeats extends ApplicationAdapter {
 	private Texture img;
@@ -29,6 +31,8 @@ public class PhoneBeats extends ApplicationAdapter {
 	private float delta;
 	private HudShell shell;
 	private BitmapFont font;
+	private HudComposite composite;
+	private HudProgressBar progressbar;
 
 	private static DeviceType application_device;
 	
@@ -47,6 +51,9 @@ public class PhoneBeats extends ApplicationAdapter {
 		//hud.addComponentGroup(group);
 		//hud.show(group);
 		shell = new HudShell(SHT.BORDER + SHT.TITLE);
+		composite = new HudComposite(shell, SHT.STANDARD);
+		progressbar = new HudProgressBar(composite, SHT.BORDER);
+		progressbar.setBounds(20, 20, 100, 50);
 		this.linerenderer = new ShapeRenderer();
 		this.fillrenderer = new ShapeRenderer();
 		Gdx.input.setInputProcessor(new SHTProcessor());

@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class SHT{
-	
+
 	//static final int YYYY = 1 << 0;	
 
 	static final String NONE = "a";
@@ -36,7 +36,22 @@ public class SHT{
 	 */
 	public static final String CLOSE = "f";
 	/**
-	 * Used in {@link HudShell}
+	 * <p>The Style character used for defining a widget to use borders</p>
+	 * <br>
+	 * <table border = "1">
+  	<col width="25%"/>
+  	<col width="75%"/>
+  	<thead>
+    	<tr><th>Component</th><th>Effect</th></tr>
+  	</thead>
+  		<tbody>
+     		<tr><td>{@link HudShell}</td><td>Defines if to draw Shell edges</td></tr>
+     		<tr><td>{@link HudProgressBar}</td><td>Defines if to draw a border around progress bar</td></tr>
+  		</tbody>
+	</table>
+	 * 
+	 * 
+	 * 
 	 */
 	public static final String BORDER = "g";
 	/**
@@ -47,69 +62,62 @@ public class SHT{
 	 * Used in {@link HudShell}
 	 */
 	public static final String RESIZE = "i";
-	
-	
+
+
 	public static final int Selection = 1;
-	
+
 	public static final int Moved = 2;
-	
+
 	public static final int Resized = 3;
-	
+
 	public static final int Disposed = 4;
-	
+
 	public static final int Verify = 5;
-	
+
 	public static final int KeyUp = 6;
-	
+
 	public static final int KeyDown = 7;
-	
+
 	public static final int KeyTyped = 8;
-	
+
 	public static final int MouseUp = 9;
-	
+
 	public static final int MouseDown = 10;
-	
+
 	public static final int MouseScroll = 11;
-	
+
 	public static final int MouseMoved = 12;
-	
+
 	public static final int MouseDragged = 13;
-	
+
 	public static final int Focus = 14;
-	
+
 	public static final int UnFocus = 15;
-	
+
 	public static final int Enable = 16;
-	
+
 	public static final int Disable = 17;
-	
-	/**
-	 * <p>Event for Game update tick;
-	 * 
-	 * <P><Strong>Widget Data Passed:</Strong><br>
-	 * <br>
-	 * {@link HudWidget} The widget the event was called on 
-	 * 
-	 */
+
 	public static final int UpdateTick = 18;
-	 
+
+	public static final int RenderTick = 19;
 
 
-	
+
 	private static HudShell sht_focused_shell;
-	
+
 	private static HudWidget sht_focused_widget;
-	
-	
+
+
 	private static final Stack<HudShell> sht_openhudshellsstack = new Stack<HudShell>();
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
 	public static final void render(SpriteBatch batch, ShapeRenderer fillRenderer, ShapeRenderer lineRenderer){
 		for(HudShell shell: sht_openhudshellsstack){
 			fillRenderer.begin(ShapeType.Filled);
@@ -151,5 +159,5 @@ public class SHT{
 	protected static final HudShell getFocusedShell(){
 		return sht_focused_shell;
 	}
-	
+
 }

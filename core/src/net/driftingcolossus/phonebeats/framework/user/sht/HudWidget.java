@@ -1,14 +1,9 @@
 package net.driftingcolossus.phonebeats.framework.user.sht;
 
-import java.util.HashMap;
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import net.driftingcolossus.phonebeats.framework.user.sht.composites.HudComposite;
 
 public class HudWidget extends HudResource{
 	
-	private final HashMap<String, Object> widget_data = new HashMap<String, Object>();
 	
 	public float widget_x;
 	
@@ -18,14 +13,34 @@ public class HudWidget extends HudResource{
 	
 	public float widget_height;
 	
+	private HudComposite widget_composite;
+	
 	public HudWidget(HudComposite composite){
-		widget_x = 0;
-		widget_y = 0;
+		widget_composite = composite;
+		widget_x = composite.getShell().getClientArea().x;
+		widget_y = composite.getShell().getClientArea().y;
 		widget_width = 0;
 		widget_height = 0;
+		composite.add(this);
 	}
-	public void render(SpriteBatch batch){
+	protected void render(SpriteBatch batch){
 		
+	}
+	public final void setBounds(float x, float y, float width, float height){
+		widget_x = widget_composite.getShell().getClientArea().x + x;
+		widget_y = widget_composite.getShell().getClientArea().y + y;
+		widget_width = width;
+		widget_height = height;
+	}
+	public final void translate(float x, float y){
+		widget_x += x;
+		widget_y += y;
+	}
+	public final void setWidth(float width){
+		widget_width = width;
+	}
+	public final void setHeight(float height){
+		widget_height = height;
 	}
 	public final void focus(){
 		SHT.focusWidget(this);
