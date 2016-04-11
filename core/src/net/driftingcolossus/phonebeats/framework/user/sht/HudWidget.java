@@ -48,5 +48,7 @@ public class HudWidget extends HudResource{
 	public final void unFocus(){
 		SHT.unFocusWidget(this);
 	}
+	
+	
 
 }

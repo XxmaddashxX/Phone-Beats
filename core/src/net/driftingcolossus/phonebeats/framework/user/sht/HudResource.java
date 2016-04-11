@@ -4,16 +4,16 @@ import java.util.HashMap;
 
 import net.driftingcolossus.phonebeats.framework.user.sht.listeners.HudListener;
 
-public class HudResource {
-	
+public abstract class HudResource {
+
 	private final HashMap<String, Object> resource_data = new HashMap<String, Object>();
-	
+
 	public final void addListener(int listenerType, HudListener listener){
-		
+
 	}
-	
+
 	public final void removeListener(HudListener listener){
-		
+
 	}
 	public final void setData(String id, Object obj){
 		resource_data.put(id, obj);
@@ -24,6 +24,8 @@ public class HudResource {
 		}
 		return null;
 	}
-	
+	public void pack(){
+
+	}
 
 }

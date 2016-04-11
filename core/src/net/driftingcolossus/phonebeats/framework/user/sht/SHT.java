@@ -1,11 +1,14 @@
 package net.driftingcolossus.phonebeats.framework.user.sht;
 
-import java.util.ArrayList;
 import java.util.Stack;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+
+import net.driftingcolossus.phonebeats.framework.user.sht.widgets.HudProgressBar;
 
 public class SHT{
 
@@ -63,7 +66,33 @@ public class SHT{
 	 */
 	public static final String RESIZE = "i";
 
+	public static final String ANNOTATE = "j";
 
+	/**
+	 * <p>The Style character used for defining a widget to use borders</p>
+	 * <br>
+	 * <table border = "1">
+  	<col width="25%"/>
+  	<col width="75%"/>
+  	<thead>
+    	<tr><th>Component</th><th>Effect</th></tr>
+  	</thead>
+  		<tbody>
+     		<tr><td>{@link HudProgressBar}</td><td>Defines if to draw the ProgressBar horizontally</td></tr>
+  		</tbody>
+	</table>
+	 * 
+	 * 
+	 * 
+	 */
+	public static final String HORIZONTAL = "k";
+	
+	public static final String VERTICAL = "l";
+	
+	
+	
+	
+	
 	public static final int Selection = 1;
 
 	public static final int Moved = 2;
@@ -102,6 +131,7 @@ public class SHT{
 
 	public static final int RenderTick = 19;
 
+	public static final int Completion= 20;
 
 
 	private static HudShell sht_focused_shell;
@@ -158,6 +188,18 @@ public class SHT{
 	}
 	protected static final HudShell getFocusedShell(){
 		return sht_focused_shell;
+	}
+	public static class Constants{
+		
+		public static BitmapFont PROGRESS_DEFAULT_FONT = new BitmapFont();
+		public static int PROGRESS_DEFAULT_MIN = 0;
+		public static int PROGRESS_DEFAULT_MAX = 100;
+		public static int PROGRESS_DEFAULT_SELECTION = 0;
+		public static Color PROGRESS_DEFAULT_COLOR_BORDER = Color.BLACK;
+		public static Color PROGRESS_DEFAULT_COLOR_BAR_NORMAL = Color.GREEN;
+		public static Color PROGRESS_DEFAULT_COLOR_BAR_ERROR = Color.RED;
+		public static Color PROGRESS_DEFAULT_COLOR_BAR_PAUSED = Color.YELLOW;
+		
 	}
 
 }

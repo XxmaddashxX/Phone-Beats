@@ -106,6 +106,12 @@ public class SHTProcessor implements InputProcessor{
 
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
+		Vector3 pos = Screen.Camera_Main().unproject(new Vector3(screenX, screenY,0));
+		for(HudShell hud: SHT.getOpenShellStack()){
+			if(hud.inRightArea((int)pos.x, (int)pos.y)){
+			
+			}
+		}
 		return false;
 	}
 
