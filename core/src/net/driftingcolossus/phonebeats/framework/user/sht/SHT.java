@@ -1,5 +1,6 @@
 package net.driftingcolossus.phonebeats.framework.user.sht;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 import com.badlogic.gdx.graphics.Color;
@@ -141,7 +142,7 @@ public class SHT{
 
 	private static final Stack<HudShell> sht_openhudshellsstack = new Stack<HudShell>();
 
-
+	private static final ArrayList<HudResource> sht_initialisedResources = new ArrayList<HudResource>();
 
 
 
@@ -189,16 +190,38 @@ public class SHT{
 	protected static final HudShell getFocusedShell(){
 		return sht_focused_shell;
 	}
+	protected static final void initResource(HudResource resource){
+		sht_initialisedResources.add(resource);
+	}
+	protected static final void disposeResource(HudResource resource){
+		sht_initialisedResources.remove(resource);
+	}
+	public static final void shutdown(){
+		for(HudResource resource: sht_initialisedResources){
+			resource.dispose();
+		}
+	}
 	public static class Constants{
 		
+		//Shell
+		public static BitmapFont SHELL_DEFAULT_TITLE_FONT = new BitmapFont();
+		public static int SHELL_DEFAULT_POSITION_X = 0;
+		public static int SHELL_DEFAULT_POSITION_Y = 0;
+		public static int SHELL_DEFAULT_SIZE_WIDTH = 100;
+		public static int SHELL_DEFAULT_SIZE_HEIGHT = 100;
+		
+		//Progress Bar
 		public static BitmapFont PROGRESS_DEFAULT_FONT = new BitmapFont();
 		public static int PROGRESS_DEFAULT_MIN = 0;
 		public static int PROGRESS_DEFAULT_MAX = 100;
-		public static int PROGRESS_DEFAULT_SELECTION = 0;
+		public static int PROGRESS_DEFAULT_SELECTION = 75;
 		public static Color PROGRESS_DEFAULT_COLOR_BORDER = Color.BLACK;
 		public static Color PROGRESS_DEFAULT_COLOR_BAR_NORMAL = Color.GREEN;
 		public static Color PROGRESS_DEFAULT_COLOR_BAR_ERROR = Color.RED;
 		public static Color PROGRESS_DEFAULT_COLOR_BAR_PAUSED = Color.YELLOW;
+		
+	}
+	public static class Debug{
 		
 	}
 

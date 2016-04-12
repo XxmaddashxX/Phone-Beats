@@ -52,8 +52,8 @@ public class PhoneBeats extends ApplicationAdapter {
 		//hud.show(group);
 		shell = new HudShell(SHT.BORDER + SHT.TITLE);
 		composite = new HudComposite(shell, SHT.STANDARD);
-		progressbar = new HudProgressBar(composite, SHT.BORDER);
-		progressbar.setBounds(20, 20, 100, 50);
+		progressbar = new HudProgressBar(composite, SHT.BORDER + SHT.HORIZONTAL);
+		progressbar.setBounds(20, 20, 200, 50);
 		this.linerenderer = new ShapeRenderer();
 		this.fillrenderer = new ShapeRenderer();
 		Gdx.input.setInputProcessor(new SHTProcessor());
@@ -99,6 +99,7 @@ public class PhoneBeats extends ApplicationAdapter {
 	@Override
 	public void dispose() {
 		hud.dispose();
+		SHT.shutdown();
 		Screen.disposeAll();
 		this.fillrenderer.dispose();
 		this.linerenderer.dispose();

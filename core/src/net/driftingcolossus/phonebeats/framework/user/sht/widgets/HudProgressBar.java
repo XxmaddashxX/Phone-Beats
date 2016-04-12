@@ -31,6 +31,10 @@ public class HudProgressBar extends HudWidget{
 
 	private boolean drawLabels;
 
+	private boolean orientation_horizontal;
+	
+	private boolean orientation_vertical;
+	
 	private ShapeRenderer renderer;
 
 	private int progress_selection;
@@ -71,19 +75,32 @@ public class HudProgressBar extends HudWidget{
 			progress_max = SHT.Constants.PROGRESS_DEFAULT_MAX;
 			progress_selection = SHT.Constants.PROGRESS_DEFAULT_SELECTION;
 		}
+		orientation_horizontal = true;
+		orientation_vertical = false;
+		if(style.contains(SHT.HORIZONTAL)){
+			orientation_horizontal = true;
+			orientation_vertical = false;
+		}
+		if(style.contains(SHT.VERTICAL)){
+			orientation_horizontal = false;
+			orientation_vertical = true;
+		}
 		if(style.contains(SHT.BORDER)){
 			drawBorder = true;
 		}
 		if(style.contains(SHT.ANNOTATE)){
 			drawLabels = true;
 		}
+		progress_bar_color = Color.RED;
+		progress_border_color = Color.RED;
 	}
 	@Override
 	protected void render(SpriteBatch batch) {
 		renderer.setProjectionMatrix(batch.getProjectionMatrix());
+		renderer.setTransformMatrix(batch.getTransformMatrix());
 		renderer.setColor(progress_bar_color);
 		renderer.begin(ShapeType.Filled);
-		
+		renderer.rect(widget_x, widget_y, orientation_horizontal ? getSelectionToDraw() : widget_width, orientation_vertical ? getSelectionToDraw() : widget_height);
 		renderer.end();
 		if(drawBorder){
 			renderer.setColor(progress_border_color);
@@ -117,6 +134,17 @@ public class HudProgressBar extends HudWidget{
 	public final int getSelection(){
 		return progress_selection;
 	}
+	public final void setSelection(int selection){
+		if(selection > getMax()){
+			progress_selection = getMax();
+		}
+		else if(selection < getMin()){
+			progress_selection = getMin();
+		}
+		else{
+			progress_selection = selection;
+		}
+	}
 	public final int getMin(){
 		return progress_min;
 	}
@@ -132,6 +160,14 @@ public class HudProgressBar extends HudWidget{
 	public void switchBarStyle(int style){
 
 	}
+	private final int getSelectionToDraw(){
+		return (int)(getSelection() * ((orientation_vertical ? widget_height : widget_width) / getMax()));
+	}
+	@Override
+	public void onDispose() {
+		renderer.dispose();
+	}
+	
 
 
 

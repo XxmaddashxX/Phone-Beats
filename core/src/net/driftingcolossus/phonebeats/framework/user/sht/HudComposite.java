@@ -45,6 +45,13 @@ public class HudComposite extends HudResource{
 			widget.translate(x, y);
 		}
 	}
+	@Override
+	public void onDispose() {
+		for(HudWidget widget: composite_widgets){
+			widget.dispose();
+		}
+	}
+	
 	
 
 }

@@ -6,6 +6,8 @@ import net.driftingcolossus.phonebeats.framework.user.sht.listeners.HudListener;
 
 public abstract class HudResource {
 
+	private boolean resource_disposed = false;
+	
 	private final HashMap<String, Object> resource_data = new HashMap<String, Object>();
 
 	public final void addListener(int listenerType, HudListener listener){
@@ -26,6 +28,17 @@ public abstract class HudResource {
 	}
 	public void pack(){
 
+	}
+	public final void dispose(){
+		resource_disposed = true;
+		SHT.initResource(this);
+		onDispose();
+	}
+	public void onDispose(){
+		
+	}
+	public final boolean isDisposed(){
+		return resource_disposed;
 	}
 
 }

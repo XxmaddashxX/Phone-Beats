@@ -7,6 +7,9 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
+
+import net.driftingcolossus.phonebeats.framework.Screen;
 
 public class HudShell extends HudResource implements HudDrawable{
 
@@ -225,7 +228,7 @@ public class HudShell extends HudResource implements HudDrawable{
 	}
 	private final void drawBackground(ShapeRenderer fillRenderer){
 		fillRenderer.setColor(shell_background_color);
-		fillRenderer.box(shell_position_x, shell_position_y, 0, shell_size_width, shell_size_height, 0);
+		fillRenderer.box(shell_bounds_client_area.x, shell_bounds_client_area.y, 0, shell_bounds_client_area.width, shell_bounds_client_area.height, 0);
 	}
 	protected final void update(){
 
@@ -233,9 +236,7 @@ public class HudShell extends HudResource implements HudDrawable{
 	protected final void onMouseRollover(){
 
 	}
-	public final void dispose(){
 
-	}
 	@Override
 	public void renderShell(ShapeRenderer fillRenderer, ShapeRenderer lineRenderer) {
 		drawBackground(fillRenderer);
@@ -252,7 +253,13 @@ public class HudShell extends HudResource implements HudDrawable{
 		}
 		batch.flush();
 		if(shell_composite != null){
+			Rectangle scissors = new Rectangle();
+			ScissorStack.calculateScissors(Screen.Camera_Main(), Screen.Viewport().getScreenX(), Screen.Viewport().getScreenY(), Screen.SCREEN_VIEWPORT_WIDTH, Screen.SCREEN_VIEWPORT_HEIGHT, batch.getTransformMatrix(), shell_bounds_client_area, scissors);
+			ScissorStack.pushScissors(scissors);
+			batch.flush();
 			shell_composite.renderWidgets(batch);
+			batch.flush();
+			ScissorStack.popScissors();
 		}
 
 	}
@@ -314,6 +321,16 @@ public class HudShell extends HudResource implements HudDrawable{
 	public final Rectangle getClientArea(){
 		return shell_bounds_client_area;
 	}
+	
+	
+	@Override
+	public void onDispose() {
+		if(shell_composite != null){
+			shell_composite.dispose();
+		}
+	}
+
+
 	static class STATIC{
 
 		private static BitmapFont shell_default_font = new BitmapFont();
