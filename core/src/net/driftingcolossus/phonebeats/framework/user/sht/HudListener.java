@@ -1,4 +1,4 @@
-package net.driftingcolossus.phonebeats.framework.user.sht.listeners;
+package net.driftingcolossus.phonebeats.framework.user.sht;
 
 import net.driftingcolossus.phonebeats.framework.user.sht.events.HudEvent;
 

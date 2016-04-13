@@ -312,6 +312,12 @@ public class HudShell extends HudResource implements HudDrawable{
 		shell_bounds_client_area = new Rectangle(shell_position_x + shell_border_thickness, shell_position_y + shell_border_thickness, shell_size_width - (shell_border_thickness * 2), shell_size_height - (shell_border_thickness * 2));
 	
 	}
+	public final float getX(){
+		return shell_position_x;
+	}
+	public final float getY(){
+		return shell_position_y;
+	}
 	public final float getWidth(){
 		return shell_size_width;
 	}

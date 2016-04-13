@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
+import net.driftingcolossus.phonebeats.framework.user.sht.events.HudEvent;
 import net.driftingcolossus.phonebeats.framework.user.sht.widgets.HudProgressBar;
 
 public class SHT{
@@ -92,7 +94,7 @@ public class SHT{
 	
 	
 	
-	
+	public static final int None = 0;
 	
 	public static final int Selection = 1;
 
@@ -144,7 +146,7 @@ public class SHT{
 
 	private static final ArrayList<HudResource> sht_initialisedResources = new ArrayList<HudResource>();
 
-
+	private static final ArrayList<HudEventTable> sht_initialisedTables = new ArrayList<HudEventTable>();
 
 
 
@@ -196,6 +198,15 @@ public class SHT{
 	protected static final void disposeResource(HudResource resource){
 		sht_initialisedResources.remove(resource);
 	}
+	protected static final void addTable(HudEventTable table){
+		sht_initialisedTables.add(table);
+	}
+	public static final void sendEvent(HudEvent event){
+		for(HudEventTable table: sht_initialisedTables){
+			table.sendEvent(event);
+			
+		}
+	}
 	public static final void shutdown(){
 		for(HudResource resource: sht_initialisedResources){
 			resource.dispose();
@@ -209,6 +220,9 @@ public class SHT{
 		public static int SHELL_DEFAULT_POSITION_Y = 0;
 		public static int SHELL_DEFAULT_SIZE_WIDTH = 100;
 		public static int SHELL_DEFAULT_SIZE_HEIGHT = 100;
+		public static Texture SHELL_DEFAULT_ICON = null;
+		public static Color SHELL_DEFAULT_SHELL_BORDER_COLOR = Color.WHITE;
+		public static Color SHELL_DEFAULT_SHELL_BACKGROUND_COLOR = Color.GRAY;
 		
 		//Progress Bar
 		public static BitmapFont PROGRESS_DEFAULT_FONT = new BitmapFont();

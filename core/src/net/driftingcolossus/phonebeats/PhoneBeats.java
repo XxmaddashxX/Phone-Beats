@@ -14,9 +14,11 @@ import net.driftingcolossus.phonebeats.framework.graphics.Graphics;
 import net.driftingcolossus.phonebeats.framework.graphics.Textures;
 import net.driftingcolossus.phonebeats.framework.user.hud.Hud;
 import net.driftingcolossus.phonebeats.framework.user.sht.HudComposite;
+import net.driftingcolossus.phonebeats.framework.user.sht.HudListener;
 import net.driftingcolossus.phonebeats.framework.user.sht.HudShell;
 import net.driftingcolossus.phonebeats.framework.user.sht.SHT;
 import net.driftingcolossus.phonebeats.framework.user.sht.SHTProcessor;
+import net.driftingcolossus.phonebeats.framework.user.sht.events.HudEvent;
 import net.driftingcolossus.phonebeats.framework.user.sht.widgets.HudProgressBar;
 
 public class PhoneBeats extends ApplicationAdapter {
@@ -54,6 +56,14 @@ public class PhoneBeats extends ApplicationAdapter {
 		composite = new HudComposite(shell, SHT.STANDARD);
 		progressbar = new HudProgressBar(composite, SHT.BORDER + SHT.HORIZONTAL);
 		progressbar.setBounds(20, 20, 200, 50);
+		progressbar.addListener(SHT.UpdateTick, new HudListener(){
+
+			@Override
+			public void handleEvent(HudEvent event) {
+				
+			}
+			
+		});
 		this.linerenderer = new ShapeRenderer();
 		this.fillrenderer = new ShapeRenderer();
 		Gdx.input.setInputProcessor(new SHTProcessor());
@@ -111,6 +121,9 @@ public class PhoneBeats extends ApplicationAdapter {
 	private void update() {
 		this.current_tick++;
 		hud.update();
+		HudEvent event = new HudEvent();
+		event.eventType = SHT.UpdateTick;
+		SHT.sendEvent(event);
 		if (this.current_tick == 20) {
 			this.current_tick = 1;
 		}

@@ -88,9 +88,9 @@ public class SHTProcessor implements InputProcessor{
 		if(shell_drag_down){
 			if(SHT.getFocusedShell() != null){
 				if(shell_drag_mode_size){
-					SHT.getFocusedShell().translateSize(shell_drag_block_x ? 0 : -(shell_drag_size_width - pos.x), shell_drag_block_y ? 0 :  -(shell_drag_size_height - pos.y));
-					shell_drag_size_width = pos.x;
-					shell_drag_size_height = pos.y;
+					SHT.getFocusedShell().translateSize(shell_drag_block_x ? 0 : -(SHT.getFocusedShell().getWidth() - (pos.x - SHT.getFocusedShell().getX())), shell_drag_block_y ? 0 :  -(SHT.getFocusedShell().getHeight() - (pos.y - SHT.getFocusedShell().getY())));
+					shell_drag_size_width = (shell_drag_size_width - pos.x);
+					shell_drag_size_height = (shell_drag_size_height - pos.y);
 				}
 				if(shell_drag_mode_move){
 					SHT.getFocusedShell().translate(shell_drag_block_x ? 0 : -(shell_drag_position_x - pos.x), shell_drag_block_y ? 0 : -(shell_drag_position_y - pos.y));

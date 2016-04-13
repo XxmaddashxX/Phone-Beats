@@ -2,16 +2,19 @@ package net.driftingcolossus.phonebeats.framework.user.sht;
 
 import java.util.HashMap;
 
-import net.driftingcolossus.phonebeats.framework.user.sht.listeners.HudListener;
-
 public abstract class HudResource {
 
 	private boolean resource_disposed = false;
 	
 	private final HashMap<String, Object> resource_data = new HashMap<String, Object>();
 
+	private HudEventTable resource_table;
+	
 	public final void addListener(int listenerType, HudListener listener){
-
+		if(resource_table == null){
+			resource_table = new HudEventTable();
+		}
+		resource_table.addListener(listenerType, listener);
 	}
 
 	public final void removeListener(HudListener listener){
