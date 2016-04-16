@@ -28,7 +28,7 @@ public class Screen {
     public static void createAndRegister() {
         screen_camera_main = new OrthographicCamera();
         SCREEN_CAMERA_MAIN = Graphics.register(screen_camera_main);
-        screen_viewport = new StretchViewport(800.0f, 600.0f, screen_camera_main);
+        screen_viewport = new StretchViewport(SCREEN_VIEWPORT_WIDTH, SCREEN_VIEWPORT_HEIGHT, screen_camera_main);
         SCREEN_VIEWPORT = Graphics.register(screen_viewport);
         screen_viewport.apply(true);
         screen_fbo_main = new FrameBuffer(Pixmap.Format.RGBA8888, (int)SCREEN_VIEWPORT_WIDTH, (int)SCREEN_VIEWPORT_HEIGHT, false);

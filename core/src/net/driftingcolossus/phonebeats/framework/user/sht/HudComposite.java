@@ -15,9 +15,10 @@ public class HudComposite extends HudResource{
 	private ArrayList<HudWidget> composite_widgets;
 	
 	public HudComposite(HudShell shell, String style){
+		super(style);
 		composite_hudShell = shell;
 		composite_widgets = new ArrayList<HudWidget>();
-		composite_hudLayout = new HudAbsoluteLayout();
+		composite_hudLayout = new HudAbsoluteLayout(this);
 		composite_hudShell.setComposite(this);
 	}
 	protected void renderWidgets(SpriteBatch batch){
@@ -31,7 +32,7 @@ public class HudComposite extends HudResource{
 		}
 		composite_widgets.add(widget);
 	}
-	protected final HudShell getShell(){
+	public final HudShell getShell(){
 		return composite_hudShell;
 	}
 	public HudLayout getLayout(){
@@ -47,9 +48,14 @@ public class HudComposite extends HudResource{
 	}
 	@Override
 	public void onDispose() {
-		for(HudWidget widget: composite_widgets){
-			widget.dispose();
+		
+	}
+	public HudWidget[] getWidgets(){
+		HudWidget[] comps = new HudWidget[composite_widgets.size()];
+		for(int i = 0; i < composite_widgets.size(); i++){
+			comps[i] = composite_widgets.get(i);
 		}
+		return comps;
 	}
 	
 	

@@ -1,5 +1,8 @@
 package net.driftingcolossus.phonebeats;
 
+import java.io.File;
+import java.io.IOException;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -12,6 +15,7 @@ import net.driftingcolossus.phonebeats.framework.Screen;
 import net.driftingcolossus.phonebeats.framework.graphics.Fonts;
 import net.driftingcolossus.phonebeats.framework.graphics.Graphics;
 import net.driftingcolossus.phonebeats.framework.graphics.Textures;
+import net.driftingcolossus.phonebeats.framework.graphics.UI;
 import net.driftingcolossus.phonebeats.framework.user.hud.Hud;
 import net.driftingcolossus.phonebeats.framework.user.sht.HudComposite;
 import net.driftingcolossus.phonebeats.framework.user.sht.HudListener;
@@ -19,6 +23,7 @@ import net.driftingcolossus.phonebeats.framework.user.sht.HudShell;
 import net.driftingcolossus.phonebeats.framework.user.sht.SHT;
 import net.driftingcolossus.phonebeats.framework.user.sht.SHTProcessor;
 import net.driftingcolossus.phonebeats.framework.user.sht.events.HudEvent;
+import net.driftingcolossus.phonebeats.framework.user.sht.widgets.HudMenuBar;
 import net.driftingcolossus.phonebeats.framework.user.sht.widgets.HudProgressBar;
 
 public class PhoneBeats extends ApplicationAdapter {
@@ -35,6 +40,7 @@ public class PhoneBeats extends ApplicationAdapter {
 	private BitmapFont font;
 	private HudComposite composite;
 	private HudProgressBar progressbar;
+	private HudMenuBar menubar;
 
 	private static DeviceType application_device;
 	
@@ -44,26 +50,9 @@ public class PhoneBeats extends ApplicationAdapter {
 	
 	@Override
 	public void create() {
-		new HudShell(SHT.MAX + SHT.CLOSE + SHT.MIN + SHT.TITLE);
 		Fonts.load();
 		Textures.load();
 		Screen.createAndRegister();
-		hud = new Hud();   
-		//HudGroup group = UI.newMainMenuScene();
-		//hud.addComponentGroup(group);
-		//hud.show(group);
-		shell = new HudShell(SHT.BORDER + SHT.TITLE);
-		composite = new HudComposite(shell, SHT.STANDARD);
-		progressbar = new HudProgressBar(composite, SHT.BORDER + SHT.HORIZONTAL);
-		progressbar.setBounds(20, 20, 200, 50);
-		progressbar.addListener(SHT.UpdateTick, new HudListener(){
-
-			@Override
-			public void handleEvent(HudEvent event) {
-				
-			}
-			
-		});
 		this.linerenderer = new ShapeRenderer();
 		this.fillrenderer = new ShapeRenderer();
 		Gdx.input.setInputProcessor(new SHTProcessor());
@@ -71,7 +60,8 @@ public class PhoneBeats extends ApplicationAdapter {
 		font.setColor(Color.WHITE);
 		this.current_tick = 0;
 		this.delta = 0.0f;
-		shell.open();
+		UI.newMainMenuScreen();
+		
 	}
 
 	@Override
@@ -90,10 +80,9 @@ public class PhoneBeats extends ApplicationAdapter {
 		this.fillrenderer.setProjectionMatrix(Screen.Camera_Main().combined.setToOrtho2D(0.0f, 0.0f, Screen.SCREEN_VIEWPORT_WIDTH, Screen.SCREEN_VIEWPORT_HEIGHT));
 		linerenderer.setProjectionMatrix(Screen.Camera_Main().combined.setToOrtho2D(0.0f, 0.0f, Screen.SCREEN_VIEWPORT_WIDTH, Screen.SCREEN_VIEWPORT_HEIGHT));
 		Graphics.begin(Screen.SCREEN_FBO_MAIN);
-		SHT.render(Screen.SpriteBatch_HUD(), fillrenderer, linerenderer);
-		
+		SHT.renderShells(fillrenderer, linerenderer);
 		Graphics.begin(Screen.SCREEN_BATCH_HUD);
-		shell.renderComponents(Screen.SpriteBatch_HUD());
+		SHT.render(Screen.SpriteBatch_HUD());
 		Graphics.end(Screen.SCREEN_BATCH_HUD);
 		Graphics.end(Screen.SCREEN_FBO_MAIN);
 		Graphics.draw(Screen.SCREEN_FBO_MAIN);
@@ -108,7 +97,6 @@ public class PhoneBeats extends ApplicationAdapter {
 
 	@Override
 	public void dispose() {
-		hud.dispose();
 		SHT.shutdown();
 		Screen.disposeAll();
 		this.fillrenderer.dispose();
@@ -120,7 +108,7 @@ public class PhoneBeats extends ApplicationAdapter {
 
 	private void update() {
 		this.current_tick++;
-		hud.update();
+		SHT.update(current_tick);
 		HudEvent event = new HudEvent();
 		event.eventType = SHT.UpdateTick;
 		SHT.sendEvent(event);

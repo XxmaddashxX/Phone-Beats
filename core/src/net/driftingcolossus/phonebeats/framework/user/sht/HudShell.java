@@ -39,6 +39,8 @@ public class HudShell extends HudResource implements HudDrawable{
 
 	private boolean shell_showTitleBar;
 
+	private boolean shell_draw;
+	
 	private String shell_title;
 
 	private float shell_position_x;
@@ -49,9 +51,9 @@ public class HudShell extends HudResource implements HudDrawable{
 
 	private float shell_size_height;
 
-	private float shell_size_min_width;
+	private float shell_size_min_width = 100;
 
-	private float shell_size_min_height;
+	private float shell_size_min_height = 100;
 
 	private float shell_size_max_width;
 
@@ -96,12 +98,15 @@ public class HudShell extends HudResource implements HudDrawable{
 	private HudComposite shell_composite;
 	
 	public HudShell(String style){
+		super(style);
 		checkStyle(style);
 		initialize("Hud Shell", STATIC.shell_default_shell_position_x, STATIC.shell_default_shell_position_y, STATIC.shell_default_shell_size_width, STATIC.shell_default_shell_size_height,
 				null, null, null, null, null, -1);
 	}
 	public HudShell(String title, String style){
+		super(style);
 		shell_title = title;
+		shell_draw = true;
 		checkStyle(style);
 		initialize(title, STATIC.shell_default_shell_position_x, STATIC.shell_default_shell_position_y, STATIC.shell_default_shell_size_width, STATIC.shell_default_shell_size_height,
 				null, null, null, null, null, -1);
@@ -121,7 +126,10 @@ public class HudShell extends HudResource implements HudDrawable{
 			shell_title_bitmapfont = STATIC.shell_default_font;
 		}
 		shell_title_glyphlayout = new GlyphLayout();
-		shell_title_glyphlayout.setText(shell_title_bitmapfont, shell_title);
+		if(shell_title_bitmapfont != null){
+			shell_title_glyphlayout.setText(shell_title_bitmapfont, shell_title);
+		}
+		
 		if(borderColor != null){
 			shell_border_color = borderColor;
 		}
@@ -179,6 +187,7 @@ public class HudShell extends HudResource implements HudDrawable{
 			shell_showClose = true;
 			shell_showTitleBar = true;
 			shell_drawBorder = true;
+			shell_draw = true;
 		}
 		if(style.contains(SHT.TITLE)){
 			shell_showTitle = true;
@@ -206,6 +215,7 @@ public class HudShell extends HudResource implements HudDrawable{
 		if(style.contains(SHT.BORDER)){
 			shell_drawBorder = true;
 		}
+		shell_draw = !style.contains(SHT.NODRAW);
 	
 	}
 
@@ -239,10 +249,13 @@ public class HudShell extends HudResource implements HudDrawable{
 
 	@Override
 	public void renderShell(ShapeRenderer fillRenderer, ShapeRenderer lineRenderer) {
-		drawBackground(fillRenderer);
-		if(shell_drawBorder){
-			drawBorder(fillRenderer);
+		if(shell_draw){
+			drawBackground(fillRenderer);
+			if(shell_drawBorder){
+				drawBorder(fillRenderer);
+			}
 		}
+		
 		
 
 	}
@@ -255,11 +268,17 @@ public class HudShell extends HudResource implements HudDrawable{
 		if(shell_composite != null){
 			Rectangle scissors = new Rectangle();
 			ScissorStack.calculateScissors(Screen.Camera_Main(), Screen.Viewport().getScreenX(), Screen.Viewport().getScreenY(), Screen.SCREEN_VIEWPORT_WIDTH, Screen.SCREEN_VIEWPORT_HEIGHT, batch.getTransformMatrix(), shell_bounds_client_area, scissors);
-			ScissorStack.pushScissors(scissors);
-			batch.flush();
-			shell_composite.renderWidgets(batch);
-			batch.flush();
-			ScissorStack.popScissors();
+			if(scissors.area() > 0){
+				ScissorStack.pushScissors(scissors);
+				batch.flush();
+				shell_composite.renderWidgets(batch);
+				batch.flush();
+				if(ScissorStack.peekScissors() != null){
+					ScissorStack.popScissors();
+				}
+			}
+			
+			
 		}
 
 	}
@@ -278,6 +297,10 @@ public class HudShell extends HudResource implements HudDrawable{
 	protected final boolean inRightArea(int x, int y){
 		return shell_bounds_border_right.contains(x, y);
 	}
+	protected final boolean inBottomArea(int x, int y){
+		return shell_bounds_border_bottom.contains(x, y);
+	}
+	
 	public final void translate(float x, float y){
 		if(shell_composite != null){
 			shell_composite.translateAll(x, y);
@@ -289,7 +312,17 @@ public class HudShell extends HudResource implements HudDrawable{
 	public final void translateSize(float width, float height){
 		shell_size_width += width;
 		shell_size_height += height;
+		if((shell_size_width < shell_size_min_width) & shell_size_min_width != 0){
+			shell_size_width = shell_size_min_width;
+		}
+		if((shell_size_height < shell_size_min_height) && shell_size_height != 0){
+			shell_size_height = shell_size_min_height;
+		}
 		updateBounds();
+	}
+	public final void setSize(float width, float height){
+		shell_size_width = width;
+		shell_size_height = height;
 	}
 	protected final void setComposite(HudComposite composite){
 		shell_composite = composite;
@@ -309,8 +342,8 @@ public class HudShell extends HudResource implements HudDrawable{
 		shell_bounds_title_area = new Rectangle(shell_position_x + shell_border_thickness, shell_position_y + (shell_size_height - shell_title_thickness), shell_size_width - shell_border_thickness, shell_title_thickness);
 		shell_bounds_border_left = new Rectangle(shell_position_x, shell_position_y + shell_border_thickness, shell_border_thickness, shell_size_height - (shell_border_thickness * 2));
 		shell_bounds_border_right = new Rectangle(shell_position_x + (shell_size_width - shell_border_thickness), shell_position_y + shell_border_thickness, shell_border_thickness, shell_size_height - (shell_border_thickness * 2));
-		shell_bounds_client_area = new Rectangle(shell_position_x + shell_border_thickness, shell_position_y + shell_border_thickness, shell_size_width - (shell_border_thickness * 2), shell_size_height - (shell_border_thickness * 2));
-	
+		shell_bounds_client_area = new Rectangle(shell_position_x + shell_border_thickness, shell_position_y + shell_border_thickness, shell_size_width - (shell_border_thickness * 2), shell_showTitle ?  shell_size_height - ((shell_border_thickness) + shell_bounds_title_area.height) :shell_size_height - (shell_border_thickness * 2));
+		shell_bounds_border_bottom = new Rectangle(shell_position_x + shell_border_thickness, shell_position_y, shell_size_width - (shell_border_thickness * 2), shell_border_thickness);
 	}
 	public final float getX(){
 		return shell_position_x;
@@ -324,6 +357,12 @@ public class HudShell extends HudResource implements HudDrawable{
 	public final float getHeight(){
 		return shell_size_height;
 	}
+	public final float getMinWidth(){
+		return shell_size_min_width;
+	}
+	public final float getMinHeight(){
+		return shell_size_min_height;
+	}
 	public final Rectangle getClientArea(){
 		return shell_bounds_client_area;
 	}
@@ -331,9 +370,7 @@ public class HudShell extends HudResource implements HudDrawable{
 	
 	@Override
 	public void onDispose() {
-		if(shell_composite != null){
-			shell_composite.dispose();
-		}
+		
 	}
 
 

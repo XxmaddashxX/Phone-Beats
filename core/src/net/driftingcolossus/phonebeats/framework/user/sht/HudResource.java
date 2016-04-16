@@ -10,9 +10,16 @@ public abstract class HudResource {
 
 	private HudEventTable resource_table;
 	
+	private String resource_style;
+	
+	public HudResource(String style){
+		resource_style = style;
+		SHT.initResource(this);
+	}
+	
 	public final void addListener(int listenerType, HudListener listener){
 		if(resource_table == null){
-			resource_table = new HudEventTable();
+			resource_table = new HudEventTable(this);
 		}
 		resource_table.addListener(listenerType, listener);
 	}
@@ -34,7 +41,6 @@ public abstract class HudResource {
 	}
 	public final void dispose(){
 		resource_disposed = true;
-		SHT.initResource(this);
 		onDispose();
 	}
 	public void onDispose(){
@@ -42,6 +48,24 @@ public abstract class HudResource {
 	}
 	public final boolean isDisposed(){
 		return resource_disposed;
+	}
+	public final String getStyle(){
+		return resource_style;
+	}
+	public void onMouseOver(int x, int y){
+		
+	}
+	public void onTouchDown(int button, int x, int y){
+		
+	}
+	public void onTouchUp(int button, int x, int y){
+		
+	}
+	public void onTouchDrag(int x, int y){
+		
+	}
+	public void onUpdateTick(int tick){
+		
 	}
 
 }

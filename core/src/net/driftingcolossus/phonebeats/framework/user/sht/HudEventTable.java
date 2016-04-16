@@ -8,7 +8,9 @@ public class HudEventTable {
 	
 	private HudListener[] table_listeners;
 	
-	public HudEventTable(){
+	private HudResource table_resource;
+	
+	public HudEventTable(HudResource resource){
 		SHT.addTable(this);
 	}
 	
@@ -45,5 +47,8 @@ public class HudEventTable {
 				table_listeners[i].handleEvent(event);
 			}
 		}
+	}
+	public HudResource getResource(){
+		return table_resource;
 	}
 }

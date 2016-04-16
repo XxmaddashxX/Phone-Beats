@@ -15,7 +15,8 @@ public class HudWidget extends HudResource{
 	
 	private HudComposite widget_composite;
 	
-	public HudWidget(HudComposite composite){
+	public HudWidget(HudComposite composite, String style){
+		super(style);
 		widget_composite = composite;
 		widget_x = composite.getShell().getClientArea().x;
 		widget_y = composite.getShell().getClientArea().y;
@@ -36,6 +37,24 @@ public class HudWidget extends HudResource{
 		widget_x += x;
 		widget_y += y;
 	}
+	public final float getX(){
+		return widget_x;
+	}
+	public final void setX(float x){
+		widget_x = x;
+	}
+	public final float getY(){
+		return widget_y;
+	}
+	public final void setY(float y){
+		widget_y = y;
+	}
+	public final float getWidth(){
+		return widget_width;
+	}
+	public final float getHeight(){
+		return widget_height;
+	}
 	public final void setWidth(float width){
 		widget_width = width;
 	}
@@ -48,7 +67,9 @@ public class HudWidget extends HudResource{
 	public final void unFocus(){
 		SHT.unFocusWidget(this);
 	}
-	
+	public final HudComposite getComposite(){
+		return widget_composite;
+	}
 	
 
 }

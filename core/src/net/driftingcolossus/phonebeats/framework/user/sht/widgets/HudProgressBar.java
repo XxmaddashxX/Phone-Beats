@@ -2,6 +2,7 @@ package net.driftingcolossus.phonebeats.framework.user.sht.widgets;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -14,18 +15,18 @@ public class HudProgressBar extends HudWidget{
 
 	public final int NORMAL = 0, PAUSED = 1, ERROR = 2, INTER = 3;
 
-	public final String HEADER_PROGRESS = "${progress}";
-	public final String HEADER_MIN = "${min}";
-	public final String HEADER_MAX = "${max}";
-	public final String HEADER_STYLE = "${style}";
+	public final String HEADER_PROGRESS = "progress";
+	public final String HEADER_MIN = "min";
+	public final String HEADER_MAX = "max";
+	public final String HEADER_STYLE = "style";
 	/**
 	 *  Ex - 15%
 	 */
-	public final String HEADER_PERCENTAGE = "${percentage}";
+	public final String HEADER_PERCENTAGE = "percentage";
 	/**
 	 *  Ex - 15/100
 	 */
-	public final String HEADER_FRACTION = "${fraction}";
+	public final String HEADER_FRACTION = "fraction";
 
 	private boolean drawBorder;
 
@@ -53,18 +54,20 @@ public class HudProgressBar extends HudWidget{
 
 	private Color progress_bar_color;
 
+	private GlyphLayout progress_labels_font_glyphlayout;
+
 	public HudProgressBar(HudComposite composite, String style) {
-		super(composite);	
+		super(composite, style);	
 		renderer = new ShapeRenderer();
 		initialize(null, NORMAL, true, 0,0,0, style);	
 	}
 	public HudProgressBar(HudComposite composite, int lookStyle, String style) {
-		super(composite);	
+		super(composite, style);	
 		renderer = new ShapeRenderer();
 		initialize(null, lookStyle, true, 0,0,0, style);	
 	}
 	public HudProgressBar(HudComposite composite, int selection , int min, int max, int lookStyle, String style) {
-		super(composite);	
+		super(composite, style);	
 		renderer = new ShapeRenderer();
 		initialize(null, lookStyle, false, min, max, selection, style);	
 	}
@@ -91,6 +94,8 @@ public class HudProgressBar extends HudWidget{
 		if(style.contains(SHT.ANNOTATE)){
 			drawLabels = true;
 		}
+		progress_labels_font = (font == null) ? SHT.Constants.PROGRESS_DEFAULT_FONT : font;
+		progress_labels_font_glyphlayout = new GlyphLayout();
 		progress_bar_color = Color.RED;
 		progress_border_color = Color.RED;
 	}
@@ -108,26 +113,32 @@ public class HudProgressBar extends HudWidget{
 			renderer.rect(widget_x, widget_y, widget_width, widget_height);
 			renderer.end();
 		}
+		batch.flush();
 		if(drawLabels){
-			String text = formatText();
+			String text = "HEY";
+			if(progress_labels_font != null && progress_labels_font_glyphlayout != null){
+				progress_labels_font_glyphlayout.setText(progress_labels_font, text);
+				progress_labels_font.setColor(Color.WHITE);
+				progress_labels_font.draw(batch, text, 50, 50);
+			}
 		}
 	}
 	private final String formatText(){
 		String label = progress_labels_format;
 		if(label.contains(HEADER_PROGRESS)){
-			label.replaceAll(HEADER_PROGRESS, "" + getSelection());
+			label = label.replaceAll(HEADER_PROGRESS, "" + getSelection());
 		}
 		if(label.contains(HEADER_MIN)){
-			label.replaceAll(HEADER_MIN, "" + getMin());
+			label = label.replaceAll(HEADER_MIN, "" + getMin());
 		}
 		if(label.contains(HEADER_MAX)){
-			label.replaceAll(HEADER_MAX, "" + getMax());
+			label = label.replaceAll(HEADER_MAX, "" + getMax());
 		}
 		if(label.contains(HEADER_PERCENTAGE)){
-			label.replaceAll(HEADER_PERCENTAGE, getSelectionAsPercentage());
+			label = label.replaceAll(HEADER_PERCENTAGE, getSelectionAsPercentage());
 		}
 		if(label.contains(HEADER_FRACTION)){
-			label.replaceAll(HEADER_FRACTION, getSelectionAsFraction());
+			label = label.replaceAll(HEADER_FRACTION, getSelectionAsFraction());
 		}
 		return label;
 	}

@@ -1,7 +1,5 @@
 package net.driftingcolossus.phonebeats.desktop;
 
-import org.eclipse.swt.widgets.Display;
-
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
@@ -10,7 +8,7 @@ import net.driftingcolossus.phonebeats.framework.DeviceType;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		Display display = new Display();
+		//Display display = new Display();
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = 1000;
 		config.height = 800;
