@@ -12,6 +12,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = 1000;
 		config.height = 800;
+		config.useGL30 = true;
 		if(arg.length > 0 && arg[0].equals("devMode")){
 			new LwjglApplication(new PhoneBeats(DeviceType.Development), config);
 		}

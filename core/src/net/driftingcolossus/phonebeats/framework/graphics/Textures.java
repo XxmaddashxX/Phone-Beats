@@ -26,7 +26,18 @@ public class Textures {
     }
 
     private static void loadTextures(FileHandle[] files) {
-    	FileHandle[] arrfileHandle = files;
+    	
+    	for(FileHandle handle: files){
+    		if(handle.isDirectory()){
+    			Textures.loadTextures(handle.list());
+    		}
+    		if(handle.extension().equals("jpg") || handle.extension().equals("png")){
+    			System.out.println(handle.nameWithoutExtension());
+    			loaded_textures.put(handle.nameWithoutExtension(), new Texture(handle));
+    		}
+    	}
+    	
+    	/*FileHandle[] arrfileHandle = files;
         int n = arrfileHandle.length;
         int n2 = 0;
         while (n2 < n) {
@@ -39,7 +50,7 @@ public class Textures {
                 loaded_textures.put(handle.nameWithoutExtension(), new Texture(handle));
             }
             ++n2;
-        }
+        }*/
     }
 
     public static Texture getTexture(String key) {

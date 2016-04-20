@@ -1,24 +1,30 @@
 package net.driftingcolossus.phonebeats;
 
-import java.io.File;
 import java.io.IOException;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 
 import net.driftingcolossus.phonebeats.framework.DeviceType;
+import net.driftingcolossus.phonebeats.framework.LanguageSet;
 import net.driftingcolossus.phonebeats.framework.Screen;
+import net.driftingcolossus.phonebeats.framework.Strings;
 import net.driftingcolossus.phonebeats.framework.graphics.Fonts;
 import net.driftingcolossus.phonebeats.framework.graphics.Graphics;
 import net.driftingcolossus.phonebeats.framework.graphics.Textures;
 import net.driftingcolossus.phonebeats.framework.graphics.UI;
 import net.driftingcolossus.phonebeats.framework.user.hud.Hud;
 import net.driftingcolossus.phonebeats.framework.user.sht.HudComposite;
-import net.driftingcolossus.phonebeats.framework.user.sht.HudListener;
 import net.driftingcolossus.phonebeats.framework.user.sht.HudShell;
 import net.driftingcolossus.phonebeats.framework.user.sht.SHT;
 import net.driftingcolossus.phonebeats.framework.user.sht.SHTProcessor;
@@ -41,7 +47,8 @@ public class PhoneBeats extends ApplicationAdapter {
 	private HudComposite composite;
 	private HudProgressBar progressbar;
 	private HudMenuBar menubar;
-
+	private ShaderProgram shader;
+	public static float time;
 	private static DeviceType application_device;
 	
 	public PhoneBeats(DeviceType type){
@@ -52,6 +59,12 @@ public class PhoneBeats extends ApplicationAdapter {
 	public void create() {
 		Fonts.load();
 		Textures.load();
+		try {
+			Strings.load(LanguageSet.ENG_UK);
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Screen.createAndRegister();
 		this.linerenderer = new ShapeRenderer();
 		this.fillrenderer = new ShapeRenderer();
@@ -61,7 +74,8 @@ public class PhoneBeats extends ApplicationAdapter {
 		this.current_tick = 0;
 		this.delta = 0.0f;
 		UI.newMainMenuScreen();
-		
+		ShaderProgram.pedantic = false;
+	
 	}
 
 	@Override
@@ -70,6 +84,7 @@ public class PhoneBeats extends ApplicationAdapter {
 		if ((double)this.delta >= (double)this.current_tick * 0.05) {
 			this.update();
 		}
+	
 		this.mainRender();
 	}
 
@@ -114,6 +129,7 @@ public class PhoneBeats extends ApplicationAdapter {
 		SHT.sendEvent(event);
 		if (this.current_tick == 20) {
 			this.current_tick = 1;
+			time++;
 		}
 	}
 	public static boolean isDesktop(){

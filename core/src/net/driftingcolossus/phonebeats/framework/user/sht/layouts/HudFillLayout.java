@@ -1,23 +1,21 @@
 package net.driftingcolossus.phonebeats.framework.user.sht.layouts;
 
-import net.driftingcolossus.phonebeats.framework.user.sht.HudComposite;
 import net.driftingcolossus.phonebeats.framework.user.sht.HudLayout;
 import net.driftingcolossus.phonebeats.framework.user.sht.HudWidget;
+import net.driftingcolossus.phonebeats.framework.user.sht.widgets.HudImage;
 
 public class HudFillLayout extends HudLayout {
 
 	
 	
-	public HudFillLayout(HudComposite composite, String style) {
-		super(composite);
+	public HudFillLayout(String style) {
+		
 	}
 
 	@Override
 	public void onWidgetAdded(HudWidget widget) {
-		HudWidget[] widgets = getComposite().getWidgets();
-		if(widgets == null || widgets.length < 1){
-
-		}
+		widget.setWidth(getComposite().getShell().getClientArea().width);
+		widget.setHeight(getComposite().getShell().getClientArea().height);
 	}
 	
 	

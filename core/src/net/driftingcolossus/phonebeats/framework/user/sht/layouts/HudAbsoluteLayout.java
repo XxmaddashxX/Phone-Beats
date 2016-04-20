@@ -7,10 +7,8 @@ import net.driftingcolossus.phonebeats.framework.user.sht.HudWidget;
 public class HudAbsoluteLayout extends HudLayout{
 
 
-	private HudComposite parent_composite;
 	
-	public HudAbsoluteLayout(HudComposite composite) {
-		super(composite);
+	public HudAbsoluteLayout() {
 	}
 
 	@Override

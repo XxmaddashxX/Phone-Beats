@@ -18,12 +18,13 @@ public class HudComposite extends HudResource{
 		super(style);
 		composite_hudShell = shell;
 		composite_widgets = new ArrayList<HudWidget>();
-		composite_hudLayout = new HudAbsoluteLayout(this);
+		setLayout(new HudAbsoluteLayout());
 		composite_hudShell.setComposite(this);
 	}
 	protected void renderWidgets(SpriteBatch batch){
 		for(HudWidget widget: composite_widgets){
 			widget.render(batch);
+			batch.flush();
 		}
 	}
 	protected final void add(HudWidget widget){
@@ -40,6 +41,7 @@ public class HudComposite extends HudResource{
 	}
 	public void setLayout(HudLayout layout){
 		composite_hudLayout = layout;
+		composite_hudLayout.setComposite(this);
 	}
 	public void translateAll(float x, float y){
 		for(HudWidget widget: composite_widgets){

@@ -52,11 +52,7 @@ public class SHT{
 	 */
 	public static final String CLOSE = "f";
 	/**
-	 * <p>The Style character used for defining a widget to use borders</p>
-	 * <br>
-	 * <table border = "1">
-  	<col width="25%"/>
-  	<col width="75%"/>
+	 * <p>The Style character used for defining a widget to use borders</p><br> <table border = "1"><col width="25%"/><col width="75%"/>
   	<thead>
     	<tr><th>Component</th><th>Effect</th></tr>
   	</thead>
@@ -75,18 +71,23 @@ public class SHT{
 	 */
 	public static final String ICON = "h";
 	/**
-	 * Used in {@link HudShell}
+	 * <p>The Style character used for defining a resource to be capable of resizing</p><br> <table border = "1"><col width="25%"/><col width="75%"/>
+  	<thead>
+    	<tr><th>Component</th><th>Effect</th></tr>
+  	</thead>
+  		<tbody>
+     		<tr><td>{@link HudShell}</td><td>Defines that the shell can be resized</td></tr>
+  		</tbody>
+	</table>
+	 * 
+	 * 
+	 * 
 	 */
 	public static final String RESIZE = "i";
 
 	public static final String ANNOTATE = "j";
-
 	/**
-	 * <p>The Style character used for defining a widget to use borders</p>
-	 * <br>
-	 * <table border = "1">
-  	<col width="25%"/>
-  	<col width="75%"/>
+	 * <p>The Style character used for defining a widgets orientation</p><br> <table border = "1"><col width="25%"/><col width="75%"/>
   	<thead>
     	<tr><th>Component</th><th>Effect</th></tr>
   	</thead>
@@ -112,6 +113,9 @@ public class SHT{
 	
 	public static final String MAINTAIN = "q";
 	
+	public static final String FADE = "r";
+	
+	public static final String FILL = "s";
 	
 	
 	public static final int None = 0;
@@ -189,7 +193,6 @@ public class SHT{
 	protected static final void shellOpen(HudShell shell){
 		sht_openhudshellsstack.push(shell);
 		sht_focused_shell = shell;
-		System.out.println("OPEN");
 	}
 	protected static final void shellClose(HudShell shell){
 		sht_openhudshellsstack.remove(shell);
@@ -278,6 +281,12 @@ public class SHT{
 		
 		//Menubar
 		public static int MENUBAR_DEFAULT_HEIGHT = 20;
+		
+		//Button
+		public static Color BUTTON_DEFAULT_BORDER_COLOR = Color.RED;
+		public static Color BUTTON_DEFAULT_BACKGROUND_COLOR = Color.LIGHT_GRAY;
+		public static Color BUTTON_DEFAULT_FONT_COLOR = Color.RED;
+		public static BitmapFont BUTTON_DEFAULT_FONT = new BitmapFont();
 		
 	}
 	public static class Debug{

@@ -41,6 +41,8 @@ public class HudShell extends HudResource implements HudDrawable{
 
 	private boolean shell_draw;
 	
+	private boolean shell_canMove;
+	
 	private String shell_title;
 
 	private float shell_position_x;
@@ -179,6 +181,8 @@ public class HudShell extends HudResource implements HudDrawable{
 
 	}
 	private final void checkStyle(String style){
+		shell_canMove = true;
+		shell_canResize = true;
 		if(style.contains(SHT.STANDARD)){
 			shell_showTitle = true;
 			shell_showIcon = true;
@@ -188,6 +192,7 @@ public class HudShell extends HudResource implements HudDrawable{
 			shell_showTitleBar = true;
 			shell_drawBorder = true;
 			shell_draw = true;
+			shell_canMove = true;
 		}
 		if(style.contains(SHT.TITLE)){
 			shell_showTitle = true;
@@ -323,6 +328,7 @@ public class HudShell extends HudResource implements HudDrawable{
 	public final void setSize(float width, float height){
 		shell_size_width = width;
 		shell_size_height = height;
+		updateBounds();
 	}
 	protected final void setComposite(HudComposite composite){
 		shell_composite = composite;
@@ -365,6 +371,12 @@ public class HudShell extends HudResource implements HudDrawable{
 	}
 	public final Rectangle getClientArea(){
 		return shell_bounds_client_area;
+	}
+	public final boolean canResize(){
+		return shell_canResize;
+	}
+	public final boolean canMove(){
+		return shell_canMove;
 	}
 	
 	
